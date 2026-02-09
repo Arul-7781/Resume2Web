@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        /* Light Theme (Default) */
+        :root {
+            --bg-primary: #F8FAFC;
+            --bg-surface: #FFFFFF;
+            --border: #E2E8F0;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent-primary: #7C3AED;
+            --accent-secondary: #0891B2;
+            --success: #16A34A;
+            --error: #DC2626;
+        }
+        
+        /* Dark Theme */
+        .dark-theme {
+            --bg-primary: #0F172A;
+            --bg-surface: #1E293B;
+            --border: #334155;
+            --text-primary: #E5E7EB;
+            --text-secondary: #94A3B8;
+            --accent-primary: #8B5CF6;
+            --accent-secondary: #22D3EE;
+            --success: #22C55E;
+            --error: #EF4444;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.2s, color 0.2s;
+        }
+        
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--accent-secondary);
+            color: var(--accent-secondary);
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--accent-secondary);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        .tab-button {
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            padding: 1rem 2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+        
+        .tab-button.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+            font-weight: 600;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+        }
+        
+        .loading {
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border);
+            background: var(--bg-surface);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+        }
+        
+        .upload-area.dragging {
+            border-color: var(--accent-primary);
+            background: var(--accent-secondary);
+            background-opacity: 0.05;
+        }
+        
+        input, textarea, select {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+        
+        .dark-theme input:focus,
+        .dark-theme textarea:focus,
+        .dark-theme select:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+        
+        label {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Preview Modal */
+        .preview-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .preview-content {
+            width: 100%;
+            max-width: 1600px;
+            height: 95vh;
+            background: var(--bg-surface);
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .preview-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .preview-iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: white;
+        }
+        
+        .theme-option-card {
+            border: 2px solid var(--border);
+            background: var(--bg-surface);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .theme-option-card:hover {
+            border-color: var(--accent-secondary);
+        }
+        
+        .theme-option-card.selected {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+            background-opacity: 0.05;
+        }
+        
+        .validation-alert {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .validation-alert.success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22C55E;
+            color: #15803D;
+        }
+        
+        .dark-theme .validation-alert.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ADE80;
+        }
+        
+        .validation-alert.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid #F59E0B;
+            color: #B45309;
+        }
+        
+        .dark-theme .validation-alert.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #FCD34D;
+        }
+        
+        .validation-alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #EF4444;
+            color: #B91C1C;
+        }
+        
+        .dark-theme .validation-alert.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #FCA5A5;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="card border-b sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8" style="color: var(--accent-primary);" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                    </svg>
+                    <h1 class="text-2xl font-semibold" style="color: var(--text-primary);">Portfolio Builder</h1>
+                </div>
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-lg" style="background: var(--bg-primary); border: 1px solid var(--border);">
+                    <svg class="w-5 h-5" id="theme-icon-sun" style="color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg class="w-5 h-5 hidden" id="theme-icon-moon" style="color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        
+        <!-- Tabs -->
+        <div class="card rounded-xl mb-6">
+            <div class="flex border-b" style="border-color: var(--border);">
+                <button onclick="switchTab('upload')" id="tab-upload" class="tab-button active">
+                    AI Upload
+                </button>
+                <button onclick="switchTab('manual')" id="tab-manual" class="tab-button">
+                    Manual Entry
+                </button>
+            </div>
+
+            <!-- AI Upload Tab -->
+            <div id="content-upload" class="p-8">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-semibold mb-2" style="color: var(--text-primary);">Upload Resume</h2>
+                    <p class="mb-6" style="color: var(--text-secondary);">Upload your resume PDF and let AI extract your information automatically</p>
+                    
+                    <div class="upload-area rounded-xl p-12 text-center" onclick="document.getElementById('resumeFile').click()">
+                        <input type="file" id="resumeFile" accept=".pdf" class="hidden" onchange="handleFileUpload(event)">
+                        <svg class="w-16 h-16 mx-auto mb-4" style="color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <p class="text-lg font-medium mb-2" style="color: var(--text-primary);">Click to upload or drag and drop</p>
+                        <p class="text-sm" style="color: var(--text-secondary);">PDF files only (max 10MB)</p>
+                    </div>
+
+                    <div id="uploadProgress" class="hidden mt-6">
+                        <div class="flex items-center justify-center gap-3">
+                            <div class="loading"></div>
+                            <span style="color: var(--text-secondary);">Parsing your resume with AI...</span>
+                        </div>
+                    </div>
+
+                    <div id="uploadError" class="hidden mt-6 p-4 rounded-lg" style="background: var(--error); background-opacity: 0.1; border: 1px solid var(--error); color: var(--error);"></div>
+                </div>
+            </div>
+
+            <!-- Manual Entry Tab -->
+            <div id="content-manual" class="hidden p-8">
+                <form id="manualForm">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Personal Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" placeholder="John Doe" required>
+                            </div>
+                            <div>
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" placeholder="john@example.com" required>
+                            </div>
+                            <div>
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" placeholder="+1 (555) 000-0000">
+                            </div>
+                            <div>
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="San Francisco, CA">
+                            </div>
+                            <div>
+                                <label for="linkedin">LinkedIn</label>
+                                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/username">
+                            </div>
+                            <div>
+                                <label for="github">GitHub</label>
+                                <input type="url" id="github" placeholder="https://github.com/username">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="bio">Professional Summary</label>
+                                <textarea id="bio" rows="3" placeholder="Brief description about yourself..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="form-section">
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Skills</h3>
+                        <label for="skills">Enter your skills (comma-separated)</label>
+                        <textarea id="skills" rows="3" placeholder="JavaScript, React, Node.js, Python, AWS"></textarea>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="form-section">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold" style="color: var(--text-primary);">Work Experience</h3>
+                            <button type="button" onclick="addExperience()" class="btn-secondary text-sm px-4 py-2">Add Experience</button>
+                        </div>
+                        <div id="experienceContainer"></div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="form-section">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold" style="color: var(--text-primary);">Education</h3>
+                            <button type="button" onclick="addEducation()" class="btn-secondary text-sm px-4 py-2">Add Education</button>
+                        </div>
+                        <div id="educationContainer"></div>
+                    </div>
+
+                    <!-- Projects -->
+                    <div class="form-section">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold" style="color: var(--text-primary);">Projects</h3>
+                            <button type="button" onclick="addProject()" class="btn-secondary text-sm px-4 py-2">Add Project</button>
+                        </div>
+                        <div id="projectContainer"></div>
+                    </div>
+
+                    <!-- Theme Selection -->
+                    <div class="form-section">
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Portfolio Theme</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="minimal-pro" class="hidden" checked>
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Minimal Pro</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Clean. Recruiter-friendly. Zero distractions.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">👔 Software engineers, freshers, corporate</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="midnight-tech" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Midnight Tech</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Sleek and premium developer vibe.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">👨‍💻 Backend, AI, full-stack devs</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="creative-studio" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Creative Studio</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Slightly playful but still professional.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">🎨 Designers, frontend devs</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="executive-black" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Executive Black</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">High contrast. Serious. Luxury brand feel.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">🧑‍💼 Senior roles, consultants, PMs</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="nature-calm" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Nature Calm</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Soft, friendly, human-centric.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">🌱 Health, sustainability, education</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="cyber-neon" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Cyber Neon</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Bold, futuristic, hackathon-energy.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">⚡ Gen-AI, blockchain, startups</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="classic-academia" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Classic Academia</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Reads like a research profile.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">📚 Researchers, students, PhD</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="mono-focus" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Mono Focus</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Content first. Typography-driven.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">✍️ Writers, bloggers, minimalists</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="product-designer" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Product Designer</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Modern SaaS-style portfolio.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">📐 UI/UX, product designers</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card">
+                                <input type="radio" name="theme" value="warm-personal" class="hidden">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Warm Personal</h4>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Approachable, friendly, human.</p>
+                                    <p class="text-xs font-medium" style="color: var(--accent-primary);">🤝 Career switchers, mentors</p>
+                                </div>
+                            </label>
+                        </div>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="themeDarkMode" class="w-5 h-5">
+                            <span style="color: var(--text-primary);">Enable dark mode for portfolio</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full">Generate Portfolio</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Data Preview (shown after AI parsing or manual generation) -->
+        <div id="dataPreview" class="hidden card rounded-xl p-8">
+            <h2 class="text-2xl font-semibold mb-6" style="color: var(--text-primary);">Review Your Portfolio Data</h2>
+            
+            <!-- Validation Results -->
+            <div id="validationResults" class="hidden mb-6"></div>
+            
+            <!-- Theme Selection for AI Upload -->
+            <div class="form-section mb-6">
+                <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Choose Portfolio Theme</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="minimal-pro" class="hidden" checked>
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Minimal Pro</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Clean. Recruiter-friendly. Zero distractions.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">👔 Software engineers, freshers, corporate</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="midnight-tech" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Midnight Tech</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Sleek and premium developer vibe.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">👨‍💻 Backend, AI, full-stack devs</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="creative-studio" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Creative Studio</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Slightly playful but still professional.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">🎨 Designers, frontend devs</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="executive-black" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Executive Black</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">High contrast. Serious. Luxury brand feel.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">🧑‍💼 Senior roles, consultants, PMs</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="nature-calm" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Nature Calm</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Soft, friendly, human-centric.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">🌱 Health, sustainability, education</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="cyber-neon" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Cyber Neon</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Bold, futuristic, hackathon-energy.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">⚡ Gen-AI, blockchain, startups</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="classic-academia" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Classic Academia</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Reads like a research profile.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">📚 Researchers, students, PhD</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="mono-focus" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Mono Focus</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Content first. Typography-driven.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">✍️ Writers, bloggers, minimalists</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="product-designer" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Product Designer</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Modern SaaS-style portfolio.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">📐 UI/UX, product designers</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="aiTheme" value="warm-personal" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-1" style="color: var(--text-primary);">Warm Personal</h4>
+                            <p class="text-xs mb-2" style="color: var(--text-secondary);">Approachable, friendly, human.</p>
+                            <p class="text-xs font-medium" style="color: var(--accent-primary);">🤝 Career switchers, mentors</p>
+                        </div>
+                    </label>
+                </div>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="aiThemeDarkMode" class="w-5 h-5">
+                    <span style="color: var(--text-primary);">Enable dark mode for portfolio</span>
+                </label>
+            </div>
+
+            <!-- JSON Preview (collapsible) -->
+            <details class="mb-6">
+                <summary class="cursor-pointer font-medium mb-4" style="color: var(--text-primary);">View Raw Data (JSON)</summary>
+                <div class="p-4 rounded-lg overflow-auto max-h-96" style="background: var(--bg-primary); border: 1px solid var(--border);">
+                    <pre id="jsonPreview" class="text-sm" style="color: var(--text-secondary);"></pre>
+                </div>
+            </details>
+
+            <!-- Platform Selector - COMMENTED OUT FOR NOW -->
+            <!--
+            <div class="form-section mb-6">
+                <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Choose Deployment Platform</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="theme-option-card">
+                        <input type="radio" name="platform" value="netlify" checked class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-2" style="color: var(--text-primary);">Netlify</h4>
+                            <p class="text-sm mb-2" style="color: var(--text-secondary);">Mature platform with great DX</p>
+                            <p class="text-xs font-semibold" style="color: var(--error);">⚠️ 100 GB/month limit</p>
+                        </div>
+                    </label>
+                    <label class="theme-option-card">
+                        <input type="radio" name="platform" value="cloudflare" class="hidden">
+                        <div>
+                            <h4 class="font-semibold mb-2" style="color: var(--text-primary);">Cloudflare Pages</h4>
+                            <p class="text-sm mb-2" style="color: var(--text-secondary);">Global CDN, blazing fast</p>
+                            <p class="text-xs font-semibold" style="color: var(--success);">✅ UNLIMITED bandwidth</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            -->
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4">
+                <button onclick="showPortfolioPreview()" class="btn-secondary flex-1">
+                    Preview Website
+                </button>
+                <button onclick="editData()" class="btn-outline flex-1">
+                    Edit Data
+                </button>
+                <button onclick="publishPortfolio()" id="publishBtn" class="btn-primary flex-1">
+                    Publish Portfolio
+                </button>
+            </div>
+
+            <div id="publishProgress" class="hidden mt-6">
+                <div class="flex items-center justify-center gap-3">
+                    <div class="loading"></div>
+                    <span style="color: var(--text-secondary);">Generating and deploying your portfolio...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Result -->
+        <div id="successResult" class="hidden card rounded-xl p-8">
+            <div class="text-center">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--success);">Portfolio Published Successfully!</h2>
+                
+                <div class="p-6 rounded-lg mb-6" style="background: var(--success); background-opacity: 0.1; border: 1px solid var(--success);">
+                    <p class="mb-3" style="color: var(--text-secondary);">Your portfolio is now live at:</p>
+                    <a id="siteUrl" href="#" target="_blank" class="text-xl font-semibold block mb-4" style="color: var(--accent-primary);"></a>
+                    
+                    <p class="mb-3" style="color: var(--text-secondary);">Download your resume:</p>
+                    <a id="pdfUrl" href="#" target="_blank" class="font-semibold" style="color: var(--accent-secondary);">📥 Download PDF Resume</a>
+                </div>
+
+                <button onclick="resetForm()" class="btn-primary">Create Another Portfolio</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="preview-modal hidden">
+        <div class="preview-content">
+            <div class="preview-header">
+                <h3 class="font-semibold text-lg" style="color: var(--text-primary);">Portfolio Preview</h3>
+                <button onclick="closePreviewModal()" class="btn-outline px-4 py-2">Close</button>
+            </div>
+            <iframe id="previewFrame" class="preview-iframe"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let portfolioData = null;
+        let experienceCount = 0;
+        let educationCount = 0;
+        let projectCount = 0;
+
+        // Tab switching
+        function switchTab(tab) {
+            // Update tab buttons
+            document.getElementById('tab-upload').classList.remove('active');
+            document.getElementById('tab-manual').classList.remove('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+            
+            // Update content
+            document.getElementById('content-upload').classList.add('hidden');
+            document.getElementById('content-manual').classList.add('hidden');
+            document.getElementById('content-' + tab).classList.remove('hidden');
+        }
+
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('builderDarkMode', isDark);
+            
+            // Toggle icons
+            document.getElementById('theme-icon-sun').classList.toggle('hidden', isDark);
+            document.getElementById('theme-icon-moon').classList.toggle('hidden', !isDark);
+        }
+
+        // Load dark mode preference
+        if (localStorage.getItem('builderDarkMode') === 'true') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('theme-icon-sun').classList.add('hidden');
+            document.getElementById('theme-icon-moon').classList.remove('hidden');
+        }
+
+        // File upload handler
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            document.getElementById('uploadProgress').classList.remove('hidden');
+            document.getElementById('uploadError').classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/parse-resume', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to parse resume');
+                }
+
+                const result = await response.json();
+                portfolioData = result.portfolio_data;
+                const validation = result.validation;
+                
+                // Show validation results
+                showValidationResults(validation);
+                showPreview();
+                
+            } catch (error) {
+                const errorDiv = document.getElementById('uploadError');
+                errorDiv.textContent = '❌ Error: ' + error.message;
+                errorDiv.classList.remove('hidden');
+            } finally {
+                document.getElementById('uploadProgress').classList.add('hidden');
+            }
+        }
+
+        // Show validation results
+        function showValidationResults(validation) {
+            const container = document.getElementById('validationResults');
+            if (!validation) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            const score = validation.completeness_score || 0;
+            let alertClass = 'success';
+            let message = '✅ Excellent! Your resume was parsed completely.';
+            
+            if (score < 70) {
+                alertClass = 'error';
+                message = '⚠️ Low quality parse - Consider re-uploading a clearer PDF or using manual entry.';
+            } else if (score < 90) {
+                alertClass = 'warning';
+                message = '⚠️ Good parse, but some information may be missing.';
+            }
+            
+            let html = `
+                <div class="validation-alert ${alertClass}">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-bold text-base">AI Parsing Quality: ${score}%</span>
+                        ${score < 100 ? '<button onclick="reParse()" class="btn-secondary text-xs px-3 py-1.5">Re-parse Resume</button>' : ''}
+                    </div>
+                    <p class="font-medium mb-2">${message}</p>
+            `;
+            
+            if (validation.missing_items && validation.missing_items.length > 0) {
+                html += '<p class="font-bold text-sm mt-4 mb-2">Missing Information:</p><ul class="text-sm list-disc pl-5 space-y-1">';
+                validation.missing_items.forEach(item => {
+                    html += `<li class="font-medium">${item}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            if (validation.suggestions && validation.suggestions.length > 0) {
+                html += '<p class="font-bold text-sm mt-4 mb-2">Suggestions:</p><ul class="text-sm list-disc pl-5 space-y-1">';
+                validation.suggestions.forEach(item => {
+                    html += `<li class="font-medium">${item}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            html += '</div>';
+            container.innerHTML = html;
+            container.classList.remove('hidden');
+        }
+
+        // Show data preview after upload
+        function showPreview() {
+            document.getElementById('dataPreview').classList.remove('hidden');
+            document.getElementById('jsonPreview').textContent = JSON.stringify(portfolioData, null, 2);
+            
+            // Set default theme as selected
+            const aiThemeCards = document.querySelectorAll('[name="aiTheme"]');
+            aiThemeCards.forEach((radio, index) => {
+                const card = radio.closest('.theme-option-card');
+                if (radio.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+                
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('[name="aiTheme"]').forEach(r => {
+                        r.closest('.theme-option-card').classList.remove('selected');
+                    });
+                    if (this.checked) {
+                        this.closest('.theme-option-card').classList.add('selected');
+                    }
+                });
+            });
+            
+            // Scroll to preview
+            document.getElementById('dataPreview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Re-parse functionality
+        function reParse() {
+            document.getElementById('resumeFile').click();
+        }
+
+        // Edit data - switch to manual tab
+        function editData() {
+            // Pre-fill manual form with parsed data
+            if (portfolioData.personal_info) {
+                const info = portfolioData.personal_info;
+                document.getElementById('name').value = info.name || '';
+                document.getElementById('email').value = info.email || '';
+                document.getElementById('phone').value = info.phone || '';
+                document.getElementById('location').value = info.location || '';
+                document.getElementById('linkedin').value = info.linkedin || '';
+                document.getElementById('github').value = info.github || '';
+                document.getElementById('bio').value = info.bio || '';
+            }
+            
+            if (portfolioData.skills) {
+                document.getElementById('skills').value = portfolioData.skills.join(', ');
+            }
+            
+            // Add experiences
+            if (portfolioData.experience && portfolioData.experience.length > 0) {
+                portfolioData.experience.forEach(exp => {
+                    addExperience(exp);
+                });
+            }
+            
+            // Add education
+            if (portfolioData.education && portfolioData.education.length > 0) {
+                portfolioData.education.forEach(edu => {
+                    addEducation(edu);
+                });
+            }
+            
+            // Add projects
+            if (portfolioData.projects && portfolioData.projects.length > 0) {
+                portfolioData.projects.forEach(proj => {
+                    addProject(proj);
+                });
+            }
+            
+            switchTab('manual');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Add experience entry
+        function addExperience(data = null) {
+            experienceCount++;
+            const container = document.getElementById('experienceContainer');
+            const div = document.createElement('div');
+            div.className = 'p-4 rounded-lg mb-4';
+            div.style.background = 'var(--bg-primary)';
+            div.style.border = '1px solid var(--border)';
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-semibold" style="color: var(--text-primary);">Experience ${experienceCount}</h4>
+                    <button type="button" onclick="this.closest('div').parentElement.remove()" class="text-sm" style="color: var(--error);">Remove</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label>Job Title</label>
+                        <input type="text" class="exp-title" value="${data?.title || ''}" placeholder="Software Engineer">
+                    </div>
+                    <div>
+                        <label>Company</label>
+                        <input type="text" class="exp-company" value="${data?.company || ''}" placeholder="Tech Corp">
+                    </div>
+                    <div>
+                        <label>Start Date</label>
+                        <input type="text" class="exp-start" value="${data?.start_date || ''}" placeholder="Jan 2020">
+                    </div>
+                    <div>
+                        <label>End Date</label>
+                        <input type="text" class="exp-end" value="${data?.end_date || 'Present'}" placeholder="Present">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label>Description</label>
+                        <textarea class="exp-desc" rows="2" placeholder="Key responsibilities and achievements...">${data?.description || ''}</textarea>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // Add education entry
+        function addEducation(data = null) {
+            educationCount++;
+            const container = document.getElementById('educationContainer');
+            const div = document.createElement('div');
+            div.className = 'p-4 rounded-lg mb-4';
+            div.style.background = 'var(--bg-primary)';
+            div.style.border = '1px solid var(--border)';
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-semibold" style="color: var(--text-primary);">Education ${educationCount}</h4>
+                    <button type="button" onclick="this.closest('div').parentElement.remove()" class="text-sm" style="color: var(--error);">Remove</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label>Degree</label>
+                        <input type="text" class="edu-degree" value="${data?.degree || ''}" placeholder="Bachelor of Science">
+                    </div>
+                    <div>
+                        <label>Institution</label>
+                        <input type="text" class="edu-school" value="${data?.institution || data?.school || ''}" placeholder="University Name">
+                    </div>
+                    <div>
+                        <label>Year</label>
+                        <input type="text" class="edu-year" value="${data?.year || ''}" placeholder="2020">
+                    </div>
+                    <div>
+                        <label>GPA (optional)</label>
+                        <input type="text" class="edu-gpa" value="${data?.gpa || ''}" placeholder="3.8/4.0">
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // Add project entry
+        function addProject(data = null) {
+            projectCount++;
+            const container = document.getElementById('projectContainer');
+            const div = document.createElement('div');
+            div.className = 'p-4 rounded-lg mb-4';
+            div.style.background = 'var(--bg-primary)';
+            div.style.border = '1px solid var(--border)';
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-semibold" style="color: var(--text-primary);">Project ${projectCount}</h4>
+                    <button type="button" onclick="this.closest('div').parentElement.remove()" class="text-sm" style="color: var(--error);">Remove</button>
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <label>Project Name</label>
+                        <input type="text" class="proj-name" value="${data?.name || ''}" placeholder="My Awesome Project">
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <textarea class="proj-desc" rows="2" placeholder="What the project does...">${data?.description || ''}</textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label>Technologies Used</label>
+                            <input type="text" class="proj-tech" value="${data?.technologies ? data.technologies.join(', ') : ''}" placeholder="React, Node.js, MongoDB">
+                        </div>
+                        <div>
+                            <label>Project Link (optional)</label>
+                            <input type="url" class="proj-link" value="${data?.link || data?.url || ''}" placeholder="https://github.com/...">
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // Theme selection handlers
+        document.querySelectorAll('[name="theme"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('[name="theme"]').forEach(r => {
+                    r.closest('.theme-option-card').classList.remove('selected');
+                });
+                this.closest('.theme-option-card').classList.add('selected');
+            });
+        });
+
+        // Set initial selected state
+        document.querySelectorAll('[name="theme"]').forEach(radio => {
+            if (radio.checked) {
+                radio.closest('.theme-option-card').classList.add('selected');
+            }
+        });
+
+        // Manual form submission
+        document.getElementById('manualForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect all form data
+            const formData = {
+                personal_info: {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    location: document.getElementById('location').value,
+                    linkedin: document.getElementById('linkedin').value,
+                    github: document.getElementById('github').value,
+                    bio: document.getElementById('bio').value
+                },
+                skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
+                experience: [],
+                education: [],
+                projects: []
+            };
+            
+            // Collect experience
+            document.querySelectorAll('#experienceContainer > div').forEach(div => {
+                formData.experience.push({
+                    title: div.querySelector('.exp-title').value,
+                    company: div.querySelector('.exp-company').value,
+                    start_date: div.querySelector('.exp-start').value,
+                    end_date: div.querySelector('.exp-end').value,
+                    description: div.querySelector('.exp-desc').value
+                });
+            });
+            
+            // Collect education
+            document.querySelectorAll('#educationContainer > div').forEach(div => {
+                formData.education.push({
+                    degree: div.querySelector('.edu-degree').value,
+                    institution: div.querySelector('.edu-school').value,
+                    year: div.querySelector('.edu-year').value,
+                    gpa: div.querySelector('.edu-gpa').value
+                });
+            });
+            
+            // Collect projects
+            document.querySelectorAll('#projectContainer > div').forEach(div => {
+                const techStr = div.querySelector('.proj-tech').value;
+                formData.projects.push({
+                    name: div.querySelector('.proj-name').value,
+                    description: div.querySelector('.proj-desc').value,
+                    technologies: techStr.split(',').map(s => s.trim()).filter(s => s),
+                    link: div.querySelector('.proj-link').value
+                });
+            });
+            
+            portfolioData = formData;
+            showPreview();
+        });
+
+        // Preview portfolio in modal
+        async function showPortfolioPreview() {
+            const selectedTheme = document.querySelector('[name="aiTheme"]:checked')?.value || 
+                                 document.querySelector('[name="theme"]:checked')?.value || 'minimal-pro';
+            const darkMode = document.getElementById('aiThemeDarkMode')?.checked || 
+                           document.getElementById('themeDarkMode')?.checked || false;
+            
+            console.log('Preview request:', { theme: selectedTheme, darkMode, portfolioData });
+            
+            // Create a copy of portfolioData and add theme/dark_mode to it
+            const dataToSend = {
+                ...portfolioData,
+                theme: selectedTheme,
+                dark_mode: darkMode
+            };
+            
+            try {
+                const response = await fetch('/api/preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Preview error response:', errorData);
+                    throw new Error(errorData.detail || 'Failed to generate preview');
+                }
+                
+                const result = await response.json();
+                console.log('Preview generated successfully');
+                
+                // Show in modal with better handling
+                const modal = document.getElementById('previewModal');
+                const iframe = document.getElementById('previewFrame');
+                
+                // Set srcdoc and show modal
+                iframe.srcdoc = result.html;
+                modal.classList.remove('hidden');
+                
+                // Ensure modal is clickable
+                modal.style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Preview error:', error);
+                alert('❌ Error generating preview: ' + error.message);
+            }
+        }
+
+        // Close preview modal
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.add('hidden');
+        }
+
+        // Publish portfolio
+        async function publishPortfolio() {
+            const selectedTheme = document.querySelector('[name="aiTheme"]:checked')?.value || 
+                                 document.querySelector('[name="theme"]:checked')?.value || 'minimal-pro';
+            const darkMode = document.getElementById('aiThemeDarkMode')?.checked || 
+                           document.getElementById('themeDarkMode')?.checked || false;
+            
+            // Cloudflare is commented out - always use Netlify
+            const platform = 'netlify';
+            
+            const publishBtn = document.getElementById('publishBtn');
+            publishBtn.disabled = true;
+            document.getElementById('publishProgress').classList.remove('hidden');
+            
+            // Create a copy of portfolioData and add theme/dark_mode to it
+            const dataToSend = {
+                ...portfolioData,
+                theme: selectedTheme,
+                dark_mode: darkMode
+            };
+            
+            try {
+                const response = await fetch(`/api/publish?platform=${platform}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to publish');
+                }
+                
+                const result = await response.json();
+                
+                // Show success
+                document.getElementById('dataPreview').classList.add('hidden');
+                document.getElementById('successResult').classList.remove('hidden');
+                document.getElementById('siteUrl').href = result.site_url;
+                document.getElementById('siteUrl').textContent = result.site_url;
+                document.getElementById('pdfUrl').href = result.pdf_url;
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Error publishing portfolio: ' + error.message);
+            } finally {
+                publishBtn.disabled = false;
+                document.getElementById('publishProgress').classList.add('hidden');
+            }
+        }
+
+        // Reset form to create new portfolio
+        function resetForm() {
+            portfolioData = null;
+            document.getElementById('resumeFile').value = '';
+            document.getElementById('manualForm').reset();
+            document.getElementById('experienceContainer').innerHTML = '';
+            document.getElementById('educationContainer').innerHTML = '';
+            document.getElementById('projectContainer').innerHTML = '';
+            document.getElementById('dataPreview').classList.add('hidden');
+            document.getElementById('successResult').classList.add('hidden');
+            document.getElementById('validationResults').classList.add('hidden');
+            experienceCount = 0;
+            educationCount = 0;
+            projectCount = 0;
+            switchTab('upload');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Drag and drop for file upload
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragging');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragging');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragging');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/pdf') {
+                document.getElementById('resumeFile').files = e.dataTransfer.files;
+                handleFileUpload({ target: { files: [file] } });
+            } else {
+                alert('Please upload a PDF file');
+            }
+        });
+    </script>
+</body>
+</html>

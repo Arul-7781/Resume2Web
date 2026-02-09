@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Resume</title>
+    
+    <!--
+    ATS OPTIMIZATION EXPLAINED:
+    
+    1. SINGLE COLUMN LAYOUT
+       - ATS parsers read top-to-bottom, left-to-right
+       - Multi-column layouts confuse parsers
+    
+    2. STANDARD FONTS
+       - Arial, Calibri, Georgia are machine-readable
+       - Avoid fancy fonts (Script, Display)
+    
+    3. SEMANTIC HTML
+       - <h1> for name → parser knows it's the candidate name
+       - <h2> for sections → clear section boundaries
+       - <p> for text → readable content
+    
+    4. NO GRAPHICS/IMAGES IN CONTENT
+       - OCR errors occur with text-in-images
+       - Use images only for decoration (if at all)
+    
+    5. BLACK TEXT ON WHITE
+       - High contrast = better parsing accuracy
+       - No background images or colors in text areas
+    -->
+    
+    <style>
+        /* CONCEPT: CSS Reset - ensures consistent rendering across platforms */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;  /* ATS-friendly font */
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #000;  /* Pure black for maximum readability */
+            background: #fff;  /* Pure white background */
+            padding: 0.5in;  /* Standard resume margins */
+            max-width: 8.5in;  /* Letter size width */
+            margin: 0 auto;
+        }
+        
+        /* NAME - Always largest, bold, top of page */
+        h1 {
+            font-size: 24pt;
+            font-weight: bold;
+            margin-bottom: 5pt;
+            text-align: center;
+        }
+        
+        /* CONTACT INFO - Centered below name */
+        .contact {
+            text-align: center;
+            font-size: 10pt;
+            margin-bottom: 15pt;
+            line-height: 1.4;
+        }
+        
+        .contact a {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        /* SECTION HEADINGS - Clear visual hierarchy */
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            border-bottom: 1px solid #000;  /* Visual separator */
+            margin-top: 15pt;
+            margin-bottom: 8pt;
+            padding-bottom: 2pt;
+        }
+        
+        /* SUBSECTION HEADINGS (Job title, degree) */
+        h3 {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-top: 8pt;
+            margin-bottom: 2pt;
+        }
+        
+        /* COMPANY/SCHOOL NAME */
+        .organization {
+            font-style: italic;
+            margin-bottom: 2pt;
+        }
+        
+        /* DATES - Right-aligned for easy scanning */
+        .date {
+            float: right;
+            font-style: italic;
+            font-size: 10pt;
+        }
+        
+        /* SKILLS LIST - Inline for compact display */
+        .skills-list {
+            margin-top: 5pt;
+            line-height: 1.8;
+        }
+        
+        /* DESCRIPTION TEXT */
+        .description {
+            margin-top: 5pt;
+            margin-bottom: 8pt;
+            white-space: pre-line;  /* Preserves line breaks from data */
+        }
+        
+        /* PROJECT LINKS */
+        .project-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 9pt;
+        }
+        
+        /* Clear floats (for date alignment) */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- HEADER SECTION -->
+    <h1>{{ personal_info.name }}</h1>
+    
+    <div class="contact">
+        {% if personal_info.email %}
+            {{ personal_info.email }}
+        {% endif %}
+        
+        {% if personal_info.phone %}
+            | {{ personal_info.phone }}
+        {% endif %}
+        
+        {% if personal_info.location %}
+            | {{ personal_info.location }}
+        {% endif %}
+        
+        <br>
+        
+        {% if personal_info.linkedin %}
+            <a href="{{ personal_info.linkedin }}">LinkedIn</a>
+        {% endif %}
+        
+        {% if personal_info.github %}
+            {% if personal_info.linkedin %} | {% endif %}
+            <a href="{{ personal_info.github }}">GitHub</a>
+        {% endif %}
+    </div>
+    
+    <!-- PROFESSIONAL SUMMARY -->
+    {% if personal_info.bio %}
+    <div class="description">
+        {{ personal_info.bio }}
+    </div>
+    {% endif %}
+    
+    <!-- SKILLS SECTION -->
+    {% if skills %}
+    <h2>SKILLS</h2>
+    <div class="skills-list">
+        {{ skills|join(', ') }}
+    </div>
+    {% endif %}
+    
+    <!-- EXPERIENCE SECTION -->
+    {% if experience %}
+    <h2>PROFESSIONAL EXPERIENCE</h2>
+    
+    {% for job in experience %}
+    <div class="clearfix">
+        <h3>{{ job.role }}</h3>
+        <span class="date">{{ job.start_date }} - {{ job.end_date or 'Present' }}</span>
+    </div>
+    <div class="organization">{{ job.company }}</div>
+    <div class="description">{{ job.description }}</div>
+    {% endfor %}
+    {% endif %}
+    
+    <!-- PROJECTS SECTION -->
+    {% if projects %}
+    <h2>PROJECTS</h2>
+    
+    {% for project in projects %}
+    <div class="clearfix">
+        <h3>{{ project.title }}</h3>
+    </div>
+    <div class="organization">{{ project.tech_stack }}</div>
+    <div class="description">
+        {{ project.description }}
+        {% if project.link %}
+        <br><a href="{{ project.link }}" class="project-link">{{ project.link }}</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+    <!-- EDUCATION SECTION -->
+    {% if education %}
+    <h2>EDUCATION</h2>
+    
+    {% for edu in education %}
+    <div class="clearfix">
+        <h3>{{ edu.degree }}</h3>
+        <span class="date">{{ edu.year }}</span>
+    </div>
+    <div class="organization">{{ edu.school }}</div>
+    {% endfor %}
+    {% endif %}
+
+</body>
+</html>
+
+<!--
+EDUCATIONAL NOTES: Why This Structure Works for ATS
+
+1. **Semantic HTML**
+   ATS systems look for specific tags:
+   - <h1> → Candidate name
+   - <h2> → Section headers (Experience, Education, etc.)
+   - <h3> → Job titles, degrees
+   
+2. **Linear Flow**
+   Content flows top-to-bottom without columns or tables.
+   ATS parsers read like a human: line by line.
+   
+3. **Standard Section Names**
+   Use exact names ATS systems expect:
+   - "PROFESSIONAL EXPERIENCE" (not "Work History")
+   - "EDUCATION" (not "Academic Background")
+   - "SKILLS" (not "Technical Proficiencies")
+   
+4. **Date Formatting**
+   Right-aligned dates are visually clear to humans
+   but still in the HTML flow for parsers.
+   
+5. **No Tables**
+   Tables break ATS parsers. Even simple layouts
+   should use divs + CSS, not table cells.
+   
+6. **Hyperlinks**
+   Email and URLs should be actual <a> tags
+   so they're clickable in the PDF.
+
+WHY WEASYPRINT EXCELS HERE:
+- Converts this HTML to pixel-perfect PDF
+- Preserves all hyperlinks (clickable in PDF)
+- Uses real fonts (not images of text)
+- Generates selectable text (ATS can copy-paste)
+-->

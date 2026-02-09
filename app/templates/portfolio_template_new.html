@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Theme Variables - Dynamically updated based on selected theme */
+        :root {
+            /* Default: Minimal Pro Light */
+            --bg-primary: #FFFFFF;
+            --text-primary: #0F172A;
+            --accent-primary: #2563EB;
+        }
+
+        /* ========== 1. MINIMAL PRO ========== */
+        [data-theme="minimal-pro"][data-mode="light"] {
+            --bg-primary: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent-primary: #2563EB;
+            --accent-secondary: #3B82F6;
+        }
+        [data-theme="minimal-pro"][data-mode="dark"] {
+            --bg-primary: #0F172A;
+            --text-primary: #E5E7EB;
+            --text-secondary: #94A3B8;
+            --accent-primary: #3B82F6;
+            --accent-secondary: #60A5FA;
+        }
+
+        /* ========== 2. MIDNIGHT TECH ========== */
+        [data-theme="midnight-tech"][data-mode="light"] {
+            --bg-primary: #F8FAFC;
+            --text-primary: #020617;
+            --text-secondary: #475569;
+            --accent-primary: #7C3AED;
+            --accent-secondary: #8B5CF6;
+        }
+        [data-theme="midnight-tech"][data-mode="dark"] {
+            --bg-primary: #020617;
+            --text-primary: #E5E7EB;
+            --text-secondary: #94A3B8;
+            --accent-primary: #8B5CF6;
+            --accent-secondary: #A78BFA;
+        }
+
+        /* ========== 3. CREATIVE STUDIO ========== */
+        [data-theme="creative-studio"][data-mode="light"] {
+            --bg-primary: #FFF7ED;
+            --text-primary: #1C1917;
+            --text-secondary: #57534E;
+            --accent-primary: #FB7185;
+            --accent-secondary: #F43F5E;
+        }
+        [data-theme="creative-studio"][data-mode="dark"] {
+            --bg-primary: #1C1917;
+            --text-primary: #FAFAF9;
+            --text-secondary: #D6D3D1;
+            --accent-primary: #F43F5E;
+            --accent-secondary: #FB7185;
+        }
+
+        /* ========== 4. EXECUTIVE BLACK ========== */
+        [data-theme="executive-black"][data-mode="light"] {
+            --bg-primary: #FAFAFA;
+            --text-primary: #000000;
+            --text-secondary: #404040;
+            --accent-primary: #111827;
+            --accent-secondary: #374151;
+        }
+        [data-theme="executive-black"][data-mode="dark"] {
+            --bg-primary: #000000;
+            --text-primary: #F9FAFB;
+            --text-secondary: #D1D5DB;
+            --accent-primary: #6B7280;
+            --accent-secondary: #9CA3AF;
+        }
+
+        /* ========== 5. NATURE CALM ========== */
+        [data-theme="nature-calm"][data-mode="light"] {
+            --bg-primary: #F0FDF4;
+            --text-primary: #052E16;
+            --text-secondary: #166534;
+            --accent-primary: #22C55E;
+            --accent-secondary: #16A34A;
+        }
+        [data-theme="nature-calm"][data-mode="dark"] {
+            --bg-primary: #052E16;
+            --text-primary: #DCFCE7;
+            --text-secondary: #BBF7D0;
+            --accent-primary: #4ADE80;
+            --accent-secondary: #22C55E;
+        }
+
+        /* ========== 6. CYBER NEON ========== */
+        [data-theme="cyber-neon"][data-mode="light"] {
+            --bg-primary: #ECFEFF;
+            --text-primary: #083344;
+            --text-secondary: #155E75;
+            --accent-primary: #06B6D4;
+            --accent-secondary: #0891B2;
+        }
+        [data-theme="cyber-neon"][data-mode="dark"] {
+            --bg-primary: #020617;
+            --text-primary: #E0F2FE;
+            --text-secondary: #BAE6FD;
+            --accent-primary: #22D3EE;
+            --accent-secondary: #06B6D4;
+        }
+
+        /* ========== 7. CLASSIC ACADEMIA ========== */
+        [data-theme="classic-academia"][data-mode="light"] {
+            --bg-primary: #FFFBEB;
+            --text-primary: #1C1917;
+            --text-secondary: #78716C;
+            --accent-primary: #92400E;
+            --accent-secondary: #B45309;
+        }
+        [data-theme="classic-academia"][data-mode="dark"] {
+            --bg-primary: #1C1917;
+            --text-primary: #FEF3C7;
+            --text-secondary: #FDE68A;
+            --accent-primary: #F59E0B;
+            --accent-secondary: #FBBF24;
+        }
+
+        /* ========== 8. MONO FOCUS ========== */
+        [data-theme="mono-focus"][data-mode="light"] {
+            --bg-primary: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --accent-primary: #6B7280;
+            --accent-secondary: #9CA3AF;
+        }
+        [data-theme="mono-focus"][data-mode="dark"] {
+            --bg-primary: #111827;
+            --text-primary: #F9FAFB;
+            --text-secondary: #D1D5DB;
+            --accent-primary: #9CA3AF;
+            --accent-secondary: #6B7280;
+        }
+
+        /* ========== 9. PRODUCT DESIGNER ========== */
+        [data-theme="product-designer"][data-mode="light"] {
+            --bg-primary: #F8FAFC;
+            --text-primary: #020617;
+            --text-secondary: #475569;
+            --accent-primary: #0EA5E9;
+            --accent-secondary: #0284C7;
+        }
+        [data-theme="product-designer"][data-mode="dark"] {
+            --bg-primary: #020617;
+            --text-primary: #E5E7EB;
+            --text-secondary: #94A3B8;
+            --accent-primary: #38BDF8;
+            --accent-secondary: #0EA5E9;
+        }
+
+        /* ========== 10. WARM PERSONAL ========== */
+        [data-theme="warm-personal"][data-mode="light"] {
+            --bg-primary: #FFF7ED;
+            --text-primary: #431407;
+            --text-secondary: #9A3412;
+            --accent-primary: #EA580C;
+            --accent-secondary: #C2410C;
+        }
+        [data-theme="warm-personal"][data-mode="dark"] {
+            --bg-primary: #431407;
+            --text-primary: #FFEDD5;
+            --text-secondary: #FED7AA;
+            --accent-primary: #FB923C;
+            --accent-secondary: #F97316;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Common Styles - Work with all themes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--accent-primary);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        [data-mode="light"] .card {
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            margin: 0.25rem;
+            font-weight: 500;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s;
+            max-width: 320px;
+        }
+
+        .theme-switcher.collapsed {
+            padding: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .theme-switcher-toggle {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.25rem;
+            transition: all 0.3s;
+        }
+
+        .collapsed .theme-switcher-toggle {
+            border-radius: 50%;
+            height: 60px;
+        }
+
+        .theme-switcher-content {
+            margin-top: 1rem;
+        }
+
+        .collapsed .theme-switcher-content {
+            display: none;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .theme-option:hover {
+            background: var(--bg-secondary);
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+
+        .theme-option input {
+            cursor: pointer;
+        }
+
+        .theme-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--accent-primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        @media print {
+            .no-print { display: none; }
+            .theme-switcher { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .theme-switcher {
+                right: 1rem;
+                bottom: 1rem;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="{{ theme or 'minimal-pro' }}" data-mode="{{ 'dark' if dark_mode else 'light' }}">
+
+    <!-- Hero Section -->
+    <section class="hero py-20">
+        <div class="container text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4">{{ personal_info.name }}</h1>
+            <p class="text-xl md:text-2xl mb-6">
+                {{ personal_info.bio or "Professional Portfolio" }}
+            </p>
+            <div class="flex justify-center gap-4 flex-wrap mb-6">
+                {% if personal_info.email %}
+                <a href="mailto:{{ personal_info.email }}" class="hover:underline">
+                    📧 {{ personal_info.email }}
+                </a>
+                {% endif %}
+                {% if personal_info.phone %}
+                <span>📱 {{ personal_info.phone }}</span>
+                {% endif %}
+                {% if personal_info.location %}
+                <span>📍 {{ personal_info.location }}</span>
+                {% endif %}
+            </div>
+            <div class="flex justify-center gap-4 no-print">
+                {% if personal_info.linkedin %}
+                <a href="{{ personal_info.linkedin }}" target="_blank" class="btn-download">
+                    LinkedIn
+                </a>
+                {% endif %}
+                {% if personal_info.github %}
+                <a href="{{ personal_info.github }}" target="_blank" class="btn-download">
+                    GitHub
+                </a>
+                {% endif %}
+                <a href="resume.pdf" download class="btn-download">
+                    📥 Download Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container py-12">
+
+        <!-- Skills -->
+        {% if skills %}
+        <section class="mb-16">
+            <h2 class="section-title">Skills & Expertise</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for skill in skills %}
+                <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Experience -->
+        {% if experience %}
+        <section class="mb-16">
+            <h2 class="section-title">Work Experience</h2>
+            {% for job in experience %}
+            <div class="card">
+                <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">{{ job.role }}</h3>
+                <p class="text-lg font-semibold mb-2" style="color: var(--accent-primary);">{{ job.company }}</p>
+                <p class="text-sm mb-4" style="color: var(--text-muted);">
+                    {{ job.start_date }}{% if job.end_date %} - {{ job.end_date }}{% endif %}
+                </p>
+                <div class="whitespace-pre-line" style="color: var(--text-secondary);">{{ job.description }}</div>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Projects -->
+        {% if projects %}
+        <section class="mb-16">
+            <h2 class="section-title">Featured Projects</h2>
+            {% for project in projects %}
+            <div class="card">
+                <h3 class="text-2xl font-bold mb-2" style="color: var(--text-primary);">{{ project.title }}</h3>
+                <p class="text-sm font-semibold mb-3" style="color: var(--accent-primary);">{{ project.tech_stack }}</p>
+                <p class="mb-4" style="color: var(--text-secondary);">{{ project.description }}</p>
+                {% if project.link %}
+                <a href="{{ project.link }}" target="_blank" class="text-blue-500 hover:underline">View Project →</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Education -->
+        {% if education %}
+        <section class="mb-16">
+            <h2 class="section-title">Education</h2>
+            {% for edu in education %}
+            <div class="card">
+                <h3 class="text-xl font-bold mb-1" style="color: var(--text-primary);">{{ edu.degree }}</h3>
+                <p class="text-lg mb-1" style="color: var(--accent-primary);">{{ edu.school }}</p>
+                <p class="text-sm" style="color: var(--text-muted);">{{ edu.year }}</p>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+    </main>
+
+    <!-- Theme Switcher -->
+    <div class="theme-switcher no-print" id="themeSwitcher">
+        <button class="theme-switcher-toggle" onclick="toggleThemeSwitcher()">
+            🎨
+        </button>
+        <div class="theme-switcher-content">
+            <h3 style="color: var(--text-primary); font-weight: 600; margin-bottom: 1rem; font-size: 1.1rem;">
+                Customize Theme
+            </h3>
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem;">
+                <span style="color: var(--text-primary); font-weight: 500;">Dark Mode</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-8" style="background: rgba(0, 0, 0, 0.05); color: var(--text-secondary);">
+        <p>&copy; {{ personal_info.name }} | Built with Portfolio Builder</p>
+    </footer>
+
+    <script>
+        // Initialize theme from body attributes
+        function initTheme() {
+            const isDark = document.body.getAttribute('data-mode') === 'dark';
+            const darkToggle = document.getElementById('darkModeToggle');
+            if (darkToggle) {
+                darkToggle.checked = isDark;
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.getElementById('darkModeToggle').checked;
+            document.body.setAttribute('data-mode', isDark ? 'dark' : 'light');
+        }
+
+        function toggleThemeSwitcher() {
+            const switcher = document.getElementById('themeSwitcher');
+            switcher.classList.toggle('collapsed');
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initTheme);
+    </script>
+
+</body>
+</html>

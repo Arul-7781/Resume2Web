@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Portfolio</title>
+    
+    <!-- Tailwind CSS from CDN for rapid prototyping -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!--
+    CONCEPT: Tailwind CSS
+    - Utility-first CSS framework
+    - Instead of writing custom CSS, use classes like "text-blue-500"
+    - Responsive design built-in (md:, lg: prefixes)
+    - Faster development than traditional CSS
+    
+    ALTERNATIVES:
+    - Bootstrap (component-based, more opinionated)
+    - Custom CSS (more control, more work)
+    - Material UI (Google's design system)
+    -->
+    
+    <style>
+        /* Custom styles for dark mode theme */
+        .dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eaeaea;
+        }
+        
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body class="{% if theme == 'dark' %}dark-mode{% else %}bg-gray-50{% endif %}">
+    
+    <!-- CONCEPT: Navigation Bar (sticky at top) -->
+    <nav class="{% if theme == 'dark' %}bg-gray-900{% else %}bg-white{% endif %} shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold {% if theme == 'dark' %}text-white{% else %}text-gray-800{% endif %}">
+                {{ personal_info.name }}
+            </h1>
+            
+            <!-- Download Resume Button - CRUCIAL FEATURE -->
+            <a href="./resume.pdf" 
+               download="{{ personal_info.name }}_Resume.pdf"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
+                📄 Download Resume
+            </a>
+        </div>
+    </nav>
+    
+    <!-- HERO SECTION -->
+    <header class="container mx-auto px-6 py-16 text-center">
+        <h2 class="text-5xl font-bold mb-4 {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+            {{ personal_info.name }}
+        </h2>
+        
+        {% if personal_info.bio %}
+        <p class="text-xl {% if theme == 'dark' %}text-gray-300{% else %}text-gray-600{% endif %} max-w-3xl mx-auto mb-8">
+            {{ personal_info.bio }}
+        </p>
+        {% endif %}
+        
+        <!-- Social Links -->
+        <div class="flex justify-center gap-4 mb-8">
+            {% if personal_info.email %}
+            <a href="mailto:{{ personal_info.email }}" 
+               class="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition">
+                📧 Email
+            </a>
+            {% endif %}
+            
+            {% if personal_info.linkedin %}
+            <a href="{{ personal_info.linkedin }}" 
+               target="_blank"
+               class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                💼 LinkedIn
+            </a>
+            {% endif %}
+            
+            {% if personal_info.github %}
+            <a href="{{ personal_info.github }}" 
+               target="_blank"
+               class="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition">
+                🔗 GitHub
+            </a>
+            {% endif %}
+        </div>
+    </header>
+    
+    <!-- SKILLS SECTION -->
+    {% if skills %}
+    <section class="container mx-auto px-6 py-12">
+        <h3 class="text-3xl font-bold mb-8 text-center {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+            Skills
+        </h3>
+        
+        <!-- CONCEPT: Flexbox for responsive tag layout -->
+        <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+            {% for skill in skills %}
+            <span class="{% if theme == 'dark' %}bg-gray-800 text-blue-400{% else %}bg-blue-100 text-blue-800{% endif %} 
+                         px-4 py-2 rounded-full font-semibold">
+                {{ skill }}
+            </span>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- PROJECTS SECTION (Grid Layout) -->
+    {% if projects %}
+    <section class="container mx-auto px-6 py-12">
+        <h3 class="text-3xl font-bold mb-8 text-center {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+            Projects
+        </h3>
+        
+        <!-- CONCEPT: CSS Grid - responsive columns (1 col mobile, 2 col tablet, 3 col desktop) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for project in projects %}
+            <div class="{% if theme == 'dark' %}bg-gray-800{% else %}bg-white{% endif %} 
+                        rounded-lg shadow-lg p-6 card-hover">
+                <h4 class="text-xl font-bold mb-2 {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+                    {{ project.title }}
+                </h4>
+                
+                <p class="{% if theme == 'dark' %}text-blue-400{% else %}text-blue-600{% endif %} 
+                          text-sm mb-3 font-semibold">
+                    {{ project.tech_stack }}
+                </p>
+                
+                <p class="{% if theme == 'dark' %}text-gray-300{% else %}text-gray-600{% endif %} mb-4">
+                    {{ project.description }}
+                </p>
+                
+                {% if project.link %}
+                <a href="{{ project.link }}" 
+                   target="_blank"
+                   class="text-blue-600 hover:text-blue-800 font-semibold">
+                    View Project →
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- EXPERIENCE SECTION -->
+    {% if experience %}
+    <section class="container mx-auto px-6 py-12">
+        <h3 class="text-3xl font-bold mb-8 text-center {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+            Experience
+        </h3>
+        
+        <div class="max-w-4xl mx-auto space-y-6">
+            {% for job in experience %}
+            <div class="{% if theme == 'dark' %}bg-gray-800{% else %}bg-white{% endif %} 
+                        rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="text-xl font-bold {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+                        {{ job.role }}
+                    </h4>
+                    <span class="{% if theme == 'dark' %}text-gray-400{% else %}text-gray-500{% endif %} text-sm">
+                        {{ job.start_date }} - {{ job.end_date or 'Present' }}
+                    </span>
+                </div>
+                
+                <p class="{% if theme == 'dark' %}text-blue-400{% else %}text-blue-600{% endif %} 
+                          font-semibold mb-3">
+                    {{ job.company }}
+                </p>
+                
+                <p class="{% if theme == 'dark' %}text-gray-300{% else %}text-gray-600{% endif %} whitespace-pre-line">
+                    {{ job.description }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- EDUCATION SECTION -->
+    {% if education %}
+    <section class="container mx-auto px-6 py-12">
+        <h3 class="text-3xl font-bold mb-8 text-center {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+            Education
+        </h3>
+        
+        <div class="max-w-4xl mx-auto space-y-4">
+            {% for edu in education %}
+            <div class="{% if theme == 'dark' %}bg-gray-800{% else %}bg-white{% endif %} 
+                        rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="text-xl font-bold {% if theme == 'dark' %}text-white{% else %}text-gray-900{% endif %}">
+                            {{ edu.degree }}
+                        </h4>
+                        <p class="{% if theme == 'dark' %}text-blue-400{% else %}text-blue-600{% endif %}">
+                            {{ edu.school }}
+                        </p>
+                    </div>
+                    <span class="{% if theme == 'dark' %}text-gray-400{% else %}text-gray-500{% endif %}">
+                        {{ edu.year }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- FOOTER -->
+    <footer class="{% if theme == 'dark' %}bg-gray-900{% else %}bg-gray-800{% endif %} 
+                   text-white py-8 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; {{ personal_info.name }} | Built with Portfolio Builder</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+<!--
+EDUCATIONAL NOTES: Modern Web Design Concepts
+
+1. **Responsive Design**
+   - Mobile-first approach (smallest screen first)
+   - Breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
+   - Tailwind classes: "md:grid-cols-2" = 2 columns on medium+ screens
+   
+2. **Utility-First CSS (Tailwind)**
+   Traditional: .card { background: white; padding: 1.5rem; }
+   Tailwind: class="bg-white p-6"
+   
+   Benefits:
+   - No context switching (HTML + CSS in one place)
+   - No naming (no "card" vs "project-card" debates)
+   - Purges unused CSS (tiny production builds)
+   
+3. **Component Patterns**
+   - Hero section: Large header with CTA
+   - Card grid: Showcase items (projects, blog posts)
+   - Sticky nav: Always visible navigation
+   
+4. **Accessibility**
+   - Semantic HTML (nav, section, header)
+   - High contrast ratios (dark text on white)
+   - Keyboard navigation (links, buttons)
+   
+5. **Performance**
+   - CDN for Tailwind (cached across sites)
+   - Minimal custom CSS
+   - No heavy JavaScript frameworks
+   
+WHY THIS BEATS TRADITIONAL TEMPLATES:
+- LinkedIn: Can't customize design
+- WordPress: Requires PHP server
+- Wix/Squarespace: Proprietary hosting
+- This: Free, custom, portable HTML
+-->

@@ -1,0 +1,32 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Data Validation
+pydantic
+pydantic-settings
+
+# AI/LLM
+google-generativeai
+# openai  # Alternative option
+
+# PDF Handling
+PyPDF2
+weasyprint
+
+# HTTP Requests
+requests
+httpx
+
+# Templating
+jinja2
+
+# Utilities
+python-dotenv
+
+# Development Tools
+pytest
+pytest-asyncio
+black
+ruff
