@@ -22,7 +22,8 @@ from typing import Dict, Any
 
 from app.config import settings
 from app.models.portfolio import PortfolioData, PublishResponse
-from app.services import AIParserService, ArtifactGeneratorService, NetlifyDeployerService, CloudflareDeployerService
+from app.services import ArtifactGeneratorService, NetlifyDeployerService, CloudflareDeployerService
+from app.services.multi_llm_parser import MultiLLMParser
 from app.services.validator import ResumeValidator
 from app.utils import PDFExtractor
 
@@ -83,16 +84,19 @@ cloudflare_deployer = None
 resume_validator = None
 
 
-def get_ai_parser() -> AIParserService:
+def get_ai_parser() -> MultiLLMParser:
     """
-    Dependency: AI Parser Service
+    Dependency: Multi-LLM Parser Service
     
     CONCEPT: Lazy initialization
     Only create the service when first needed (not at startup)
+    Uses multi-LLM approach for better accuracy
     """
     global ai_parser
     if ai_parser is None:
-        ai_parser = AIParserService()
+        parser_mode = settings.parser_mode
+        logger.info(f"Initializing Multi-LLM Parser in {parser_mode} mode")
+        ai_parser = MultiLLMParser(mode=parser_mode)
     return ai_parser
 
 
@@ -244,16 +248,21 @@ async def parse_resume(
         # Clean text for better AI parsing
         cleaned_text = PDFExtractor.clean_text(pdf_text)
         
-        # Parse with AI (lazy initialization)
+        # Parse with AI (lazy initialization - uses adaptive multi-LLM)
         parser = get_ai_parser()
-        portfolio_data = parser.parse_with_retry(cleaned_text)
+        portfolio_data = parser.parse_resume(cleaned_text)
         
         # Validate parsed data against original resume
         validator = get_resume_validator()
-        validation_result = validator.validate(cleaned_text, portfolio_data)
-        
-        logger.info(f"Successfully parsed resume for {portfolio_data.personal_info.name}")
-        logger.info(f"Validation score: {validation_result['completeness_score']}%")
+        try:
+            validation_result = validator.validate(cleaned_text, portfolio_data)
+            logger.info(f"Successfully parsed resume for {portfolio_data.personal_info.name}")
+            logger.info(f"AI Validation score: {validation_result['completeness_score']}%")
+        except Exception as val_error:
+            # Fallback to quick validation if Gemini validator fails (e.g., rate limit)
+            logger.warning(f"AI validation failed ({val_error}), using quick validation")
+            validation_result = validator.quick_validate(portfolio_data)
+            logger.info(f"Quick Validation score: {validation_result['completeness_score']}%")
         
         # Return both parsed data and validation results
         return JSONResponse(content={
@@ -276,17 +285,18 @@ async def parse_resume(
 # =============================================================================
 
 @app.post("/api/preview")
-async def preview_portfolio(data: PortfolioData) -> JSONResponse:
+async def preview_portfolio(data: Dict[str, Any]) -> JSONResponse:
     """
     Generate portfolio HTML preview without deploying
     
     WORKFLOW:
-    1. Validate input data
-    2. Generate HTML portfolio (no deployment)
-    3. Return HTML as string for iframe preview
+    1. Receive raw JSON (not validated yet for flexibility)
+    2. Clean and validate data
+    3. Generate HTML portfolio (no deployment)
+    4. Return HTML as string for iframe preview
     
     Args:
-        data: Complete portfolio data
+        data: Portfolio data as raw dict
         
     Returns:
         JSONResponse with HTML content
@@ -305,22 +315,25 @@ async def preview_portfolio(data: PortfolioData) -> JSONResponse:
     ```
     """
     try:
-        logger.info(f"Generating preview for {data.personal_info.name}")
+        # Validate and convert to PortfolioData
+        portfolio_data = PortfolioData(**data)
+        
+        logger.info(f"Generating preview for {portfolio_data.personal_info.name}")
         
         # Generate HTML only (no ZIP, no PDF, no deployment)
         generator = get_artifact_generator()
-        html_content = generator._generate_portfolio_html(data)
+        html_content = generator._generate_portfolio_html(portfolio_data)
         
         return JSONResponse(content={
             "html": html_content,
-            "name": data.personal_info.name
+            "name": portfolio_data.personal_info.name
         })
         
     except Exception as e:
         logger.error(f"Preview generation error: {e}")
         raise HTTPException(
-            status_code=500,
-            detail=f"Failed to generate preview: {str(e)}"
+            status_code=422,
+            detail=f"Invalid portfolio data: {str(e)}"
         )
 
 

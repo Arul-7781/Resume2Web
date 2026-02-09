@@ -440,6 +440,15 @@
                         <div id="projectContainer"></div>
                     </div>
 
+                    <!-- Achievements -->
+                    <div class="form-section">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold" style="color: var(--text-primary);">Achievements & Awards</h3>
+                            <button type="button" onclick="addAchievement()" class="btn-secondary text-sm px-4 py-2">Add Achievement</button>
+                        </div>
+                        <div id="achievementContainer"></div>
+                    </div>
+
                     <!-- Theme Selection -->
                     <div class="form-section">
                         <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Portfolio Theme</h3>
@@ -542,6 +551,23 @@
             
             <!-- Validation Results -->
             <div id="validationResults" class="hidden mb-6"></div>
+            
+            <!-- Link Enrichment Section -->
+            <div id="linkEnrichment" class="form-section mb-6">
+                <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">🔗 Add Social Links (Optional)</h3>
+                <p class="text-sm mb-4" style="color: var(--text-secondary);">AI parsing doesn't always capture social links. Add them here:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="enrichLinkedin">LinkedIn Profile</label>
+                        <input type="url" id="enrichLinkedin" placeholder="https://linkedin.com/in/yourname">
+                    </div>
+                    <div>
+                        <label for="enrichGithub">GitHub Profile</label>
+                        <input type="url" id="enrichGithub" placeholder="https://github.com/yourname">
+                    </div>
+                </div>
+                <button onclick="applyLinkEnrichment()" class="btn-secondary mt-4">Apply Links</button>
+            </div>
             
             <!-- Theme Selection for AI Upload -->
             <div class="form-section mb-6">
@@ -850,6 +876,14 @@
             document.getElementById('dataPreview').classList.remove('hidden');
             document.getElementById('jsonPreview').textContent = JSON.stringify(portfolioData, null, 2);
             
+            // Pre-fill enrichment inputs if data exists
+            if (portfolioData.personal_info.linkedin) {
+                document.getElementById('enrichLinkedin').value = portfolioData.personal_info.linkedin;
+            }
+            if (portfolioData.personal_info.github) {
+                document.getElementById('enrichGithub').value = portfolioData.personal_info.github;
+            }
+            
             // Set default theme as selected
             const aiThemeCards = document.querySelectorAll('[name="aiTheme"]');
             aiThemeCards.forEach((radio, index) => {
@@ -918,8 +952,41 @@
                 });
             }
             
+            // Add achievements
+            if (portfolioData.achievements && portfolioData.achievements.length > 0) {
+                portfolioData.achievements.forEach(ach => {
+                    addAchievement(ach);
+                });
+            }
+            
             switchTab('manual');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Apply link enrichment
+        function applyLinkEnrichment() {
+            const linkedin = document.getElementById('enrichLinkedin').value.trim();
+            const github = document.getElementById('enrichGithub').value.trim();
+            
+            if (linkedin) {
+                portfolioData.personal_info.linkedin = linkedin;
+            }
+            if (github) {
+                portfolioData.personal_info.github = github;
+            }
+            
+            // Update preview
+            document.getElementById('jsonPreview').textContent = JSON.stringify(portfolioData, null, 2);
+            
+            // Show success message
+            const btn = document.querySelector('#linkEnrichment button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Links Applied ✓';
+            btn.style.background = 'var(--success)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
         }
 
         // Add experience entry
@@ -988,8 +1055,12 @@
                         <input type="text" class="edu-year" value="${data?.year || ''}" placeholder="2020">
                     </div>
                     <div>
-                        <label>GPA (optional)</label>
-                        <input type="text" class="edu-gpa" value="${data?.gpa || ''}" placeholder="3.8/4.0">
+                        <label>GPA / Percentage</label>
+                        <input type="text" class="edu-gpa" value="${data?.gpa || ''}" placeholder="3.8/4.0 or 85%">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label>Additional Details (honors, coursework, etc.)</label>
+                        <textarea class="edu-desc" rows="2" placeholder="Summa Cum Laude, Dean's List...">${data?.description || ''}</textarea>
                     </div>
                 </div>
             `;
@@ -1012,21 +1083,62 @@
                 <div class="grid grid-cols-1 gap-3">
                     <div>
                         <label>Project Name</label>
-                        <input type="text" class="proj-name" value="${data?.name || ''}" placeholder="My Awesome Project">
+                        <input type="text" class="proj-name" value="${data?.title || data?.name || ''}" placeholder="My Awesome Project">
                     </div>
                     <div>
                         <label>Description</label>
                         <textarea class="proj-desc" rows="2" placeholder="What the project does...">${data?.description || ''}</textarea>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
                             <label>Technologies Used</label>
-                            <input type="text" class="proj-tech" value="${data?.technologies ? data.technologies.join(', ') : ''}" placeholder="React, Node.js, MongoDB">
+                            <input type="text" class="proj-tech" value="${data?.tech_stack || (data?.technologies ? data.technologies.join(', ') : '')}" placeholder="React, Node.js">
                         </div>
                         <div>
-                            <label>Project Link (optional)</label>
-                            <input type="url" class="proj-link" value="${data?.link || data?.url || ''}" placeholder="https://github.com/...">
+                            <label>Live Demo / Website</label>
+                            <input type="url" class="proj-link" value="${data?.link || data?.url || ''}" placeholder="https://demo.com">
                         </div>
+                        <div>
+                            <label>GitHub Repository</label>
+                            <input type="url" class="proj-github" value="${data?.github_url || ''}" placeholder="https://github.com/user/repo">
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // Add achievement entry
+        function addAchievement(data = null) {
+            let achievementCount = document.querySelectorAll('#achievementContainer > div').length + 1;
+            const container = document.getElementById('achievementContainer');
+            const div = document.createElement('div');
+            div.className = 'p-4 rounded-lg mb-4';
+            div.style.background = 'var(--bg-primary)';
+            div.style.border = '1px solid var(--border)';
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-semibold" style="color: var(--text-primary);">Achievement ${achievementCount}</h4>
+                    <button type="button" onclick="this.closest('div').parentElement.remove()" class="text-sm" style="color: var(--error);">Remove</button>
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <label>Achievement Title</label>
+                        <input type="text" class="ach-title" value="${data?.title || ''}" placeholder="Best Paper Award, Dean's List, Certification...">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label>Issuing Organization</label>
+                            <input type="text" class="ach-issuer" value="${data?.issuer || ''}" placeholder="IEEE, Google, University...">
+                        </div>
+                        <div>
+                            <label>Date</label>
+                            <input type="text" class="ach-date" value="${data?.date || ''}" placeholder="2023 or Jan 2023">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Description (optional)</label>
+                        <textarea class="ach-desc" rows="2" placeholder="Details about the achievement...">${data?.description || ''}</textarea>
                     </div>
                 </div>
             `;
@@ -1068,7 +1180,8 @@
                 skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
                 experience: [],
                 education: [],
-                projects: []
+                projects: [],
+                achievements: []
             };
             
             // Collect experience
@@ -1088,7 +1201,8 @@
                     degree: div.querySelector('.edu-degree').value,
                     institution: div.querySelector('.edu-school').value,
                     year: div.querySelector('.edu-year').value,
-                    gpa: div.querySelector('.edu-gpa').value
+                    gpa: div.querySelector('.edu-gpa').value,
+                    description: div.querySelector('.edu-desc').value
                 });
             });
             
@@ -1096,10 +1210,21 @@
             document.querySelectorAll('#projectContainer > div').forEach(div => {
                 const techStr = div.querySelector('.proj-tech').value;
                 formData.projects.push({
-                    name: div.querySelector('.proj-name').value,
+                    title: div.querySelector('.proj-name').value,
                     description: div.querySelector('.proj-desc').value,
-                    technologies: techStr.split(',').map(s => s.trim()).filter(s => s),
-                    link: div.querySelector('.proj-link').value
+                    tech_stack: techStr,
+                    link: div.querySelector('.proj-link').value,
+                    github_url: div.querySelector('.proj-github').value
+                });
+            });
+            
+            // Collect achievements
+            document.querySelectorAll('#achievementContainer > div').forEach(div => {
+                formData.achievements.push({
+                    title: div.querySelector('.ach-title').value,
+                    issuer: div.querySelector('.ach-issuer').value,
+                    date: div.querySelector('.ach-date').value,
+                    description: div.querySelector('.ach-desc').value
                 });
             });
             

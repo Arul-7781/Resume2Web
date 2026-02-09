@@ -9,7 +9,10 @@ pydantic-settings
 
 # AI/LLM
 google-generativeai
-# openai  # Alternative option
+openai  # GPT models for fallback/ensemble
+groq  # Fast Llama models with free tier
+mistralai  # Mistral models
+cohere  # Cohere models for structured extraction
 
 # PDF Handling
 PyPDF2

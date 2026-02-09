@@ -112,72 +112,82 @@ Respond with ONLY the JSON object, no other text."""
             
             return validation_result
             
-        except json.JSONDecodeError as e:
-            # Fallback: Return basic validation failure
-            return {
-                "completeness_score": 0,
-                "is_complete": False,
-                "missing_items": ["Validation failed - unable to parse AI response"],
-                "suggestions": ["Try parsing again or check resume format"],
-                "validation_details": {"error": str(e)},
-                "raw_response": result_text if 'result_text' in locals() else ""
-            }
         except Exception as e:
-            return {
-                "completeness_score": 0,
-                "is_complete": False,
-                "missing_items": [f"Validation error: {str(e)}"],
-                "suggestions": ["Try parsing again"],
-                "validation_details": {"error": str(e)}
-            }
+            error_msg = str(e).lower()
+            # Check if it's a rate limit error
+            if any(keyword in error_msg for keyword in ['rate limit', 'quota', '429', 'resource_exhausted', 'exceeded']):
+                # Return quick validation instead of error
+                print(f"⚠️ Gemini validator rate limited, using quick validation")
+                return self.quick_validate(parsed_data)
+            
+            # For other errors, still try quick validation as fallback
+            return self.quick_validate(parsed_data)
     
     def quick_validate(self, parsed_data: PortfolioData) -> Dict[str, Any]:
         """
         Quick rule-based validation without AI (faster, for basic checks).
+        Returns high scores for well-parsed data.
         """
         issues = []
         score = 100
         
-        # Check personal info
+        # Check personal info (critical)
         if not parsed_data.personal_info.name or len(parsed_data.personal_info.name) < 2:
             issues.append("Name is missing or too short")
-            score -= 20
+            score -= 25
         
-        if not parsed_data.personal_info.email:
-            issues.append("Email is missing")
-            score -= 10
+        if not parsed_data.personal_info.email or '@' not in parsed_data.personal_info.email:
+            issues.append("Email is missing or invalid")
+            score -= 25
         
-        # Check skills
-        if not parsed_data.skills or len(parsed_data.skills) < 3:
-            issues.append("Skills section seems incomplete (less than 3 skills)")
+        # Check skills (important)
+        if not parsed_data.skills:
+            issues.append("Skills section is empty")
             score -= 15
+        elif len(parsed_data.skills) < 3:
+            issues.append("Skills section seems incomplete (less than 3 skills)")
+            score -= 5
         
-        # Check experience
+        # Check experience (important)
         if not parsed_data.experience:
             issues.append("No work experience found")
-            score -= 20
-        else:
-            for i, exp in enumerate(parsed_data.experience):
-                if not exp.description or exp.description == "":
-                    issues.append(f"Experience #{i+1} ({exp.role}) missing description")
-                    score -= 10
-        
-        # Check projects
-        if not parsed_data.projects:
-            issues.append("No projects found")
             score -= 15
+        else:
+            missing_desc_count = 0
+            for exp in parsed_data.experience:
+                if not exp.description or len(exp.description.strip()) < 20:
+                    missing_desc_count += 1
+            if missing_desc_count > 0:
+                issues.append(f"{missing_desc_count} experience(s) have incomplete descriptions")
+                score -= min(missing_desc_count * 3, 10)
         
-        # Check education
+        # Check education (important)
         if not parsed_data.education:
             issues.append("No education found")
             score -= 10
         
+        # Optional fields - minor deductions
+        if not parsed_data.projects:
+            score -= 5  # Projects optional, minor deduction
+        
+        if not parsed_data.personal_info.phone:
+            score -= 2
+        
+        if not parsed_data.personal_info.location:
+            score -= 2
+        
         score = max(0, score)
+        
+        suggestions = []
+        if score < 100:
+            suggestions = [f"Consider reviewing: {item}" for item in issues]
+        else:
+            suggestions = ["All required fields are present!"]
         
         return {
             "completeness_score": score,
-            "is_complete": score >= 90,
+            "is_complete": score >= 85,
             "missing_items": issues,
-            "suggestions": [f"Review and fix: {item}" for item in issues],
-            "validation_type": "quick"
+            "suggestions": suggestions,
+            "validation_type": "quick (AI validator unavailable - using rule-based validation)"
         }
