@@ -128,6 +128,11 @@ class ArtifactGeneratorService:
             'split_screen_hero': 'split_screen_hero.html',
             'single_page_scroll': 'single_page_scroll.html',
             'elegant_professional': 'elegant_professional.html',
+            'developer_dark': 'developer_dark.html',
+            'minimal_monochrome': 'minimal_monochrome.html',
+            'modern_personal': 'modern_personal.html',
+            'dark_anonymous': 'dark_anonymous.html',
+            'orange_professional': 'orange_professional.html',
             'portfolio_template_new': 'portfolio_template_new.html',  # Legacy support
         }
         

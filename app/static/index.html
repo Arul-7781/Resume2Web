@@ -369,7 +369,7 @@
                     <!-- Design Template Selection for AI Upload (shown after parsing) -->
                     <div id="aiDesignTemplateSection" class="hidden mt-8 p-6 rounded-xl" style="background: var(--bg-secondary);">
                         <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">🎨 Choose Your Design Style</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="aiDesignTemplate" value="split_screen_hero" class="hidden" checked onchange="toggleAiColorThemes(false)">
                                 <div>
@@ -389,6 +389,41 @@
                                 <div>
                                     <h4 class="font-semibold mb-1" style="color: var(--text-primary);">✨ Elegant Professional</h4>
                                     <p class="text-xs" style="color: var(--text-secondary);">Warm & Sophisticated</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="developer_dark" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">💻 Developer Dark</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Code-Style & Purple</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="minimal_monochrome" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">⬛ Minimal Monochrome</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Clean Black & White</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="modern_personal" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">💼 Modern Personal</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Professional & Clean</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="dark_anonymous" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🔴 Dark Anonymous</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Dramatic Red & Black</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="orange_professional" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🟠 Orange Professional</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Dark & Orange Theme</p>
                                 </div>
                             </label>
                             <label class="theme-option-card" style="cursor: pointer;">
@@ -516,7 +551,7 @@
                     <div class="form-section">
                         <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">🎨 Portfolio Design Style</h3>
                         <p class="text-sm mb-4" style="color: var(--text-secondary);">Choose a completely different layout and design system (not just colors!)</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="design_template" value="split_screen_hero" class="hidden" checked onchange="toggleManualColorThemes(false)">
                                 <div>
@@ -545,6 +580,56 @@
                                     <p class="text-xs mb-2" style="color: var(--text-secondary);">Warm, sophisticated design with curved sections and script fonts</p>
                                     <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Forest green + Beige/Pink</p>
                                     <p class="text-xs" style="color: var(--text-secondary);">Best for: Consultants, Coaches, Corporate Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="developer_dark" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">💻 Developer Dark</h4>
+                                    <div class="text-4xl mb-3 text-center">👨‍💻</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Dark theme with code-style typography and purple accents</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Charcoal + Purple highlights</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Developers, Coders, Tech Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="minimal_monochrome" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">⬛ Minimal Monochrome</h4>
+                                    <div class="text-4xl mb-3 text-center">🎯</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Clean black and white design with diagonal split hero and boxed sections</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Black + White + Gray</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Designers, Minimalists, Creative Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="modern_personal" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">💼 Modern Personal</h4>
+                                    <div class="text-4xl mb-3 text-center">👔</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Professional portfolio with bordered skill cards and clean layout</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Black + White contrast</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Developers, Designers, All Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="dark_anonymous" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🔴 Dark Anonymous</h4>
+                                    <div class="text-4xl mb-3 text-center">🔥</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Dramatic dark theme with red circular glow and vertical navigation</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Black + Red (#FF0055)</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Creative Professionals, Designers, Bold Portfolios</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="orange_professional" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🟠 Orange Professional</h4>
+                                    <div class="text-4xl mb-3 text-center">🎨</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Modern dark theme with vibrant orange accents and circular progress indicators</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Dark Gray (#1A1A1A) + Orange (#FF6B00)</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: UI/UX Designers, Creative Professionals, Modern Portfolios</p>
                                 </div>
                             </label>
                             <label class="theme-option-card" style="cursor: pointer;">

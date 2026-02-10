@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            color: #000;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Navigation */
+        .nav-link {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            font-size: 1rem;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.6;
+        }
+        
+        .btn-resume {
+            background: #000;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid #000;
+        }
+        
+        .btn-resume:hover {
+            background: white;
+            color: #000;
+        }
+        
+        /* Social Icons */
+        .social-icon {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: #000;
+        }
+        
+        .social-icon:hover {
+            background: #000;
+            color: white;
+        }
+        
+        /* Skill Cards */
+        .skill-card {
+            border: 2px solid #000;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .skill-card:hover {
+            box-shadow: 8px 8px 0 #000;
+            transform: translate(-4px, -4px);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header span {
+            font-weight: 400;
+        }
+        
+        /* Experience/Project Cards */
+        .experience-card {
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        
+        .experience-card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+        }
+        
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        
+        /* Project Cards */
+        .project-card {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        
+        .project-number {
+            font-size: 4rem;
+            font-weight: 800;
+            opacity: 0.1;
+        }
+        
+        .project-image {
+            flex: 1;
+            aspect-ratio: 16/10;
+            background: #1a1a1a;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        
+        .project-content {
+            flex: 1;
+        }
+        
+        /* Form Inputs */
+        .form-input {
+            width: 100%;
+            border: 2px solid #e5e5e5;
+            padding: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: #000;
+        }
+        
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn-submit {
+            background: #000;
+            color: white;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-submit:hover {
+            background: #333;
+        }
+        
+        /* Illustrations */
+        .illustration {
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .project-card {
+                flex-direction: column;
+            }
+            
+            .section-header {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navigation -->
+    <nav class="fixed top-0 w-full bg-white z-50 border-b border-gray-200">
+        <div class="container mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-black transform rotate-45"></div>
+                <span class="font-bold text-xl">Personal</span>
+            </div>
+            
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#about" class="nav-link">About Me</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Project</a>
+                <a href="#contact" class="nav-link">Contact Me</a>
+                <a href="resume.pdf" class="btn-resume flex items-center gap-2">
+                    Resume
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/></svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 px-6 md:px-12 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left: Text Content -->
+                <div>
+                    <p class="text-lg mb-4">Hello I'am</p>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4">
+                        {{ personal_info.name }}<span class="text-5xl md:text-6xl">.</span>
+                    </h1>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-2">
+                        <span style="color: white; -webkit-text-stroke: 2px black;">{{ personal_info.title or 'Frontend' }}</span> 
+                        <span class="font-bold">Developer</span>
+                    </h2>
+                    <p class="text-lg mb-8">Based In <span class="font-bold">{{ personal_info.location or 'India' }}.</span></p>
+                    
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        {% if personal_info.bio %}
+                        {{ personal_info.bio[:200] }}{% if personal_info.bio|length > 200 %}...{% endif %}
+                        {% else %}
+                        I'm a passionate developer. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                        {% endif %}
+                    </p>
+                    
+                    <!-- Social Icons -->
+                    <div class="flex gap-4">
+                        {% if personal_info.github %}
+                        <a href="{{ personal_info.github }}" target="_blank" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        </a>
+                        {% endif %}
+                        {% if personal_info.linkedin %}
+                        <a href="{{ personal_info.linkedin }}" target="_blank" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                        {% endif %}
+                        {% if personal_info.twitter %}
+                        <a href="{{ personal_info.twitter }}" target="_blank" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        </a>
+                        {% endif %}
+                        {% if personal_info.email %}
+                        <a href="mailto:{{ personal_info.email }}" class="social-icon">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Right: Illustration -->
+                <div class="flex justify-center">
+                    {% if personal_info.photo %}
+                    <img src="{{ personal_info.photo }}" alt="{{ personal_info.name }}" class="illustration rounded-2xl">
+                    {% else %}
+                    <!-- Cartoon Illustration: Person with Laptop -->
+                    <svg class="illustration" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Head -->
+                        <ellipse cx="250" cy="120" rx="60" ry="70" fill="#000" stroke="#000" stroke-width="2"/>
+                        <!-- Face detail -->
+                        <path d="M 230 120 Q 250 140 270 120" fill="none" stroke="#fff" stroke-width="2"/>
+                        <!-- Hair -->
+                        <path d="M 190 100 Q 190 60 250 50 Q 310 60 310 100" fill="#000"/>
+                        
+                        <!-- Body/Torso -->
+                        <rect x="180" y="180" width="140" height="120" rx="20" fill="#000"/>
+                        
+                        <!-- Arms -->
+                        <rect x="140" y="200" width="50" height="80" rx="25" fill="#000"/>
+                        <rect x="310" y="200" width="50" height="80" rx="25" fill="#000"/>
+                        
+                        <!-- Laptop -->
+                        <rect x="180" y="280" width="140" height="100" rx="10" fill="#e0e0e0" stroke="#000" stroke-width="3"/>
+                        <rect x="190" y="290" width="120" height="70" fill="#fff" stroke="#000" stroke-width="2"/>
+                        <circle cx="250" cy="365" r="3" fill="#000"/>
+                        
+                        <!-- Laptop base -->
+                        <path d="M 160 380 L 340 380 L 350 400 L 150 400 Z" fill="#e0e0e0" stroke="#000" stroke-width="3"/>
+                        
+                        <!-- Sitting position (simplified) -->
+                        <ellipse cx="250" cy="380" rx="80" ry="40" fill="#fff" stroke="#000" stroke-width="2"/>
+                    </svg>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    {% if skills %}
+    <section id="skills" class="py-20 px-6 md:px-12 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header text-center">My <span>Skills</span></h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {% for skill in skills %}
+                <div class="skill-card">
+                    {% set skill_lower = skill.lower() %}
+                    <div class="mb-4 flex items-center justify-center">
+                        {% if 'python' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="w-16 h-16"/>
+                        {% elif 'javascript' in skill_lower or 'js' == skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="w-16 h-16"/>
+                        {% elif 'java' in skill_lower and 'javascript' not in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" class="w-16 h-16"/>
+                        {% elif 'react' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="w-16 h-16"/>
+                        {% elif 'node' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" class="w-16 h-16"/>
+                        {% elif 'html' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="w-16 h-16"/>
+                        {% elif 'css' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" class="w-16 h-16"/>
+                        {% elif 'c++' in skill_lower or 'cpp' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" class="w-16 h-16"/>
+                        {% elif skill_lower == 'c' or 'c ' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" class="w-16 h-16"/>
+                        {% elif 'git' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="w-16 h-16"/>
+                        {% elif 'docker' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" class="w-16 h-16"/>
+                        {% elif 'typescript' in skill_lower or 'ts' == skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" class="w-16 h-16"/>
+                        {% elif 'vue' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" alt="Vue.js" class="w-16 h-16"/>
+                        {% elif 'angular' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" alt="Angular" class="w-16 h-16"/>
+                        {% elif 'mongo' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="w-16 h-16"/>
+                        {% elif 'sass' in skill_lower or 'scss' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="Sass" class="w-16 h-16"/>
+                        {% elif 'nest' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-plain.svg" alt="NestJS" class="w-16 h-16"/>
+                        {% elif 'tailwind' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind" class="w-16 h-16"/>
+                        {% elif 'bootstrap' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" class="w-16 h-16"/>
+                        {% elif 'figma' in skill_lower %}
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="w-16 h-16"/>
+                        {% else %}
+                            <div class="w-16 h-16 bg-gray-100 rounded flex items-center justify-center font-bold text-2xl">
+                                {{ skill[:2].upper() }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h3 class="font-semibold text-sm">{{ skill }}</h3>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Experience Section -->
+    {% if experience %}
+    <section class="py-20 px-6 md:px-12 bg-black text-white">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header text-center">My <span>Experience</span></h2>
+            
+            <div class="space-y-6 max-w-4xl mx-auto">
+                {% for job in experience %}
+                <div class="experience-card">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="company-logo flex-shrink-0">
+                            {{ job.company[0] }}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+                                <h3 class="text-xl font-bold">{{ job.role }} at {{ job.company }}</h3>
+                                <span class="text-sm text-gray-400">{{ job.start_date }} - {{ job.end_date or 'Present' }}</span>
+                            </div>
+                            <p class="text-gray-300 leading-relaxed whitespace-pre-line">{{ job.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6 md:px-12 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left: Illustration -->
+                <div class="flex justify-center">
+                    {% if personal_info.photo %}
+                    <img src="{{ personal_info.photo }}" alt="{{ personal_info.name }}" class="illustration rounded-2xl border-4 border-black">
+                    {% else %}
+                    <!-- Cartoon Illustration: Formal Portrait -->
+                    <svg class="illustration" viewBox="0 0 340 440" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Border frame -->
+                        <rect x="10" y="10" width="320" height="420" rx="15" fill="#fff" stroke="#000" stroke-width="4"/>
+                        
+                        <!-- Head -->
+                        <ellipse cx="170" cy="140" rx="50" ry="60" fill="#f5f5f5" stroke="#000" stroke-width="2"/>
+                        
+                        <!-- Hair -->
+                        <path d="M 120 120 Q 120 80 170 75 Q 220 80 220 120 Q 220 100 170 95 Q 120 100 120 120" fill="#000"/>
+                        <path d="M 125 115 Q 130 105 140 110" fill="#000"/>
+                        <path d="M 200 110 Q 210 105 215 115" fill="#000"/>
+                        
+                        <!-- Face features -->
+                        <circle cx="150" cy="135" r="3" fill="#000"/>
+                        <circle cx="190" cy="135" r="3" fill="#000"/>
+                        <path d="M 155 155 Q 170 160 185 155" fill="none" stroke="#000" stroke-width="2"/>
+                        <path d="M 140 128 Q 145 125 150 128" fill="none" stroke="#000" stroke-width="1.5"/>
+                        <path d="M 190 128 Q 185 125 180 128" fill="none" stroke="#000" stroke-width="1.5"/>
+                        
+                        <!-- Neck -->
+                        <rect x="155" y="190" width="30" height="25" fill="#f5f5f5" stroke="#000" stroke-width="2"/>
+                        
+                        <!-- Formal shirt/suit -->
+                        <path d="M 100 215 L 100 380 Q 100 390 110 390 L 230 390 Q 240 390 240 380 L 240 215 Q 240 205 230 205 L 110 205 Q 100 205 100 215" fill="#000"/>
+                        
+                        <!-- Collar -->
+                        <path d="M 155 210 L 145 230 L 155 240" fill="#fff" stroke="#000" stroke-width="2"/>
+                        <path d="M 185 210 L 195 230 L 185 240" fill="#fff" stroke="#000" stroke-width="2"/>
+                        <rect x="160" y="215" width="20" height="30" fill="#fff"/>
+                        
+                        <!-- Arms crossed -->
+                        <ellipse cx="110" cy="300" rx="25" ry="60" fill="#000" transform="rotate(-20 110 300)"/>
+                        <ellipse cx="230" cy="300" rx="25" ry="60" fill="#000" transform="rotate(20 230 300)"/>
+                        
+                        <!-- Hands -->
+                        <ellipse cx="140" cy="330" rx="20" ry="15" fill="#f5f5f5" stroke="#000" stroke-width="2"/>
+                        <ellipse cx="200" cy="330" rx="20" ry="15" fill="#f5f5f5" stroke="#000" stroke-width="2"/>
+                        
+                        <!-- Hand details -->
+                        <line x1="135" y1="330" x2="145" y2="330" stroke="#000" stroke-width="1"/>
+                        <line x1="195" y1="330" x2="205" y2="330" stroke="#000" stroke-width="1"/>
+                    </svg>
+                    {% endif %}
+                </div>
+                
+                <!-- Right: Text Content -->
+                <div>
+                    <h2 class="section-header">About <span>Me</span></h2>
+                    
+                    <div class="space-y-4 text-gray-700 leading-relaxed">
+                        {% if personal_info.bio %}
+                        <p>{{ personal_info.bio }}</p>
+                        {% else %}
+                        <p>I'm a passionate, self-proclaimed designer who specializes in full stack development (React.js & Node.js). I am very enthusiastic about bringing the technical and visual aspects of digital products to life, User experience, pixel perfect design, and writing clean, readable, highly performant code matters to me.</p>
+                        
+                        <p>I began my journey as a web developer in 2015, and since then, I've continued to grow and evolve as a developer, taking on new challenges and learning the latest technologies along the way. Now, in my early thirties, 7 years after starting my web development journey, I'm building cutting-edge web applications using modern technologies such as Next.js, TypeScript, Nestjs, Tailwindcss, Supabase and much more.</p>
+                        
+                        <p>When I'm not in full-on developer mode, you can find me hovering around on twitter or on indie hacker, witnessing the journey of early startups or enjoying some free time. You can follow me on Twitter where I share tech-related bites and build in public, or you can follow me on GitHub.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    {% if projects %}
+    <section id="projects" class="py-20 px-6 md:px-12 bg-black text-white">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header text-center">My <span>Projects</span></h2>
+            
+            <div>
+                {% for project in projects %}
+                <div class="project-card {% if loop.index is even %}flex-row-reverse{% endif %}">
+                    <div class="project-image">
+                        <div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-6xl font-bold">
+                            {{ loop.index }}
+                        </div>
+                    </div>
+                    
+                    <div class="project-content">
+                        <div class="project-number mb-4">0{{ loop.index }}</div>
+                        <h3 class="text-3xl font-bold mb-4">{{ project.title }}</h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">{{ project.description }}</p>
+                        {% if project.tech_stack %}
+                        <p class="text-sm text-gray-500 mb-4">Technologies: {{ project.tech_stack }}</p>
+                        {% endif %}
+                        {% if project.link %}
+                        <a href="{{ project.link }}" target="_blank" class="inline-flex items-center gap-2 text-white hover:text-gray-400 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            View Project
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if education %}
+    <section class="py-20 px-6 md:px-12 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header text-center">My <span>Education</span></h2>
+            
+            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                {% for edu in education %}
+                <div class="skill-card">
+                    <div class="text-4xl mb-4">🎓</div>
+                    <h3 class="text-xl font-bold mb-2">{{ edu.degree }}</h3>
+                    <p class="text-gray-600 font-semibold mb-2">{{ edu.school }}</p>
+                    <p class="text-sm text-gray-500">{{ edu.year }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6 md:px-12 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <!-- Left: Form -->
+                <div>
+                    <form class="space-y-6">
+                        <input type="text" placeholder="Your name" class="form-input" required>
+                        <input type="email" placeholder="Email" class="form-input" required>
+                        <input type="text" placeholder="Your website (If exists)" class="form-input">
+                        <textarea placeholder="How can I help?*" class="form-input" required></textarea>
+                        
+                        <div class="flex gap-4 items-center">
+                            {% if personal_info.email %}
+                            <a href="mailto:{{ personal_info.email }}" class="btn-submit">
+                                Get In Touch
+                            </a>
+                            {% else %}
+                            <button type="submit" class="btn-submit">
+                                Get In Touch
+                            </button>
+                            {% endif %}
+                            
+                            <div class="flex gap-3">
+                                {% if personal_info.github %}
+                                <a href="{{ personal_info.github }}" target="_blank" class="social-icon">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                </a>
+                                {% endif %}
+                                {% if personal_info.linkedin %}
+                                <a href="{{ personal_info.linkedin }}" target="_blank" class="social-icon">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                </a>
+                                {% endif %}
+                                {% if personal_info.twitter %}
+                                <a href="{{ personal_info.twitter }}" target="_blank" class="social-icon">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                                </a>
+                                {% endif %}
+                                {% if personal_info.email %}
+                                <a href="mailto:{{ personal_info.email }}" class="social-icon">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Right: Contact Info -->
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        Let's talk for<br>
+                        Something special
+                    </h2>
+                    
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        I seek to push the limits of creativity to create high-engaging, user-friendly, and memorable interactive experiences.
+                    </p>
+                    
+                    {% if personal_info.email %}
+                    <p class="text-2xl font-bold mb-4">{{ personal_info.email }}</p>
+                    {% endif %}
+                    {% if personal_info.phone %}
+                    <p class="text-2xl font-bold">{{ personal_info.phone }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-8 px-6 md:px-12">
+        <div class="container mx-auto max-w-6xl flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-white transform rotate-45"></div>
+                <span class="font-bold">Personal</span>
+            </div>
+            
+            <div class="text-sm text-gray-400">
+                <p>@ 2024-{{ '2026' }} Personal</p>
+                <p class="text-xs">Made with ❤️</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
