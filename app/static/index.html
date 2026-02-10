@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -246,22 +247,72 @@
         }
         
         .theme-option-card {
-            border: 2px solid var(--border);
-            background: var(--bg-surface);
-            padding: 1rem;
-            border-radius: 0.75rem;
+            position: relative;
+            border-radius: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         
         .theme-option-card:hover {
-            border-color: var(--accent-secondary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
         }
         
         .theme-option-card.selected {
-            border-color: var(--accent-primary);
-            background: var(--accent-primary);
-            background-opacity: 0.05;
+            box-shadow: 0 0 0 3px var(--accent-primary);
+        }
+        
+        .theme-option-card .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        
+        .theme-option-card .card-content {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem;
+        }
+        
+        .theme-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        .theme-icon {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .theme-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .theme-subtitle {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .theme-username {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
         }
         
         .validation-alert {
@@ -368,80 +419,143 @@
                     
                     <!-- Design Template Selection for AI Upload (shown after parsing) -->
                     <div id="aiDesignTemplateSection" class="hidden mt-8 p-6 rounded-xl" style="background: var(--bg-secondary);">
-                        <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">🎨 Choose Your Design Style</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);"><i class="fas fa-paint-brush" style="color: var(--accent-primary);"></i> Portfolio Design Style</h3>
+                        <p class="text-sm mb-4" style="color: var(--text-secondary);">Choose your portfolio design - each has unique layouts and visual styles</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Developer Dark -->
                             <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="aiDesignTemplate" value="split_screen_hero" class="hidden" checked onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🌟 Split Screen Hero</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Modern & Bold</p>
+                                <input type="radio" name="aiDesignTemplate" value="developer_dark" class="hidden" checked onchange="toggleAiColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-code theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Developer Dark</h4>
+                                    <p class="theme-subtitle">Code-Style & Purple</p>
+                                    <p class="theme-username">@dev-dark</p>
                                 </div>
                             </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="aiDesignTemplate" value="single_page_scroll" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🌊 Single Page Scroll</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Friendly & Colorful</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="aiDesignTemplate" value="elegant_professional" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">✨ Elegant Professional</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Warm & Sophisticated</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="aiDesignTemplate" value="developer_dark" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">💻 Developer Dark</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Code-Style & Purple</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="aiDesignTemplate" value="minimal_monochrome" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">⬛ Minimal Monochrome</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Clean Black & White</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="aiDesignTemplate" value="modern_personal" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">💼 Modern Personal</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Professional & Clean</p>
-                                </div>
-                            </label>
+                            
+                            <!-- Dark Anonymous -->
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="aiDesignTemplate" value="dark_anonymous" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🔴 Dark Anonymous</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Dramatic Red & Black</p>
+                                <div class="card-bg" style="background: linear-gradient(135deg, #000000 0%, #FF0055 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-user-secret theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Dark Anonymous</h4>
+                                    <p class="theme-subtitle">Dramatic Red & Black</p>
+                                    <p class="theme-username">@dark-anon</p>
                                 </div>
                             </label>
+                            
+                            <!-- Split Screen Hero -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="split_screen_hero" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-columns theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Split Screen Hero</h4>
+                                    <p class="theme-subtitle">Minimalist & Bold</p>
+                                    <p class="theme-username">@split-hero</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Modern Personal -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="modern_personal" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #434343 0%, #000000 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-briefcase theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Modern Personal</h4>
+                                    <p class="theme-subtitle">Professional & Clean</p>
+                                    <p class="theme-username">@modern-personal</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Elegant Professional -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="elegant_professional" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-gem theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Elegant Professional</h4>
+                                    <p class="theme-subtitle">Warm & Sophisticated</p>
+                                    <p class="theme-username">@elegant-pro</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Minimal Monochrome -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="minimal_monochrome" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-square theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Minimal Monochrome</h4>
+                                    <p class="theme-subtitle">Clean Black & White</p>
+                                    <p class="theme-username">@minimal-bw</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Single Page Scroll -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="single_page_scroll" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-water theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Single Page Scroll</h4>
+                                    <p class="theme-subtitle">Friendly & Colorful</p>
+                                    <p class="theme-username">@single-scroll</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Orange Professional -->
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="aiDesignTemplate" value="orange_professional" class="hidden" onchange="toggleAiColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🟠 Orange Professional</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Dark & Orange Theme</p>
+                                <div class="card-bg" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-palette theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Orange Professional</h4>
+                                    <p class="theme-subtitle">Dark & Orange Theme</p>
+                                    <p class="theme-username">@orange-pro</p>
                                 </div>
                             </label>
+                            
+                            <!-- Classic Themes -->
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="aiDesignTemplate" value="portfolio_template_new" class="hidden" onchange="toggleAiColorThemes(true)">
-                                <div>
-                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🎭 Classic Themes</h4>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Original Color Variations</p>
+                                <div class="card-bg" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-swatchbook theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Classic Themes</h4>
+                                    <p class="theme-subtitle">Original Color Variations</p>
+                                    <p class="theme-username">@classic-themes</p>
                                 </div>
                             </label>
                         </div>
                         
                         <!-- Photo Upload -->
                         <div class="mt-6">
-                            <h3 class="text-lg font-semibold mb-3" style="color: var(--text-primary);">📸 Upload Your Photo (Optional)</h3>
+                            <h3 class="text-lg font-semibold mb-3" style="color: var(--text-primary);"><i class="fas fa-camera" style="color: var(--accent-primary);"></i> Upload Your Photo (Optional)</h3>
                             <div class="border-2 border-dashed rounded-lg p-6 text-center" style="border-color: var(--border);">
                                 <input type="file" id="aiPhotoUpload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'ai')">
                                 <button type="button" onclick="document.getElementById('aiPhotoUpload').click()" class="btn-secondary">
-                                    Choose Photo
+                                    <i class="fas fa-camera mr-2"></i> Choose Photo
                                 </button>
                                 <p class="text-xs mt-2" style="color: var(--text-secondary);">JPG, PNG (max 5MB)</p>
                                 <div id="aiPhotoPreview" class="hidden mt-4">
@@ -493,7 +607,7 @@
                                 <div class="border-2 border-dashed rounded-lg p-6 text-center" style="border-color: var(--border);">
                                     <input type="file" id="manualPhotoUpload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'manual')">
                                     <button type="button" onclick="document.getElementById('manualPhotoUpload').click()" class="btn-secondary">
-                                        📸 Upload Photo
+                                        <i class="fas fa-camera mr-2"></i> Upload Photo
                                     </button>
                                     <p class="text-xs mt-2" style="color: var(--text-secondary);">JPG, PNG (max 5MB)</p>
                                     <div id="manualPhotoPreview" class="hidden mt-4">
@@ -549,97 +663,132 @@
 
                     <!-- Design Template Selection (NEW) -->
                     <div class="form-section">
-                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">🎨 Portfolio Design Style</h3>
-                        <p class="text-sm mb-4" style="color: var(--text-secondary);">Choose a completely different layout and design system (not just colors!)</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);"><i class="fas fa-paint-brush" style="color: var(--accent-primary);"></i> Portfolio Design Style</h3>
+                        <p class="text-sm mb-4" style="color: var(--text-secondary);">Choose your portfolio design - each has unique layouts and visual styles</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                            <!-- Developer Dark -->
                             <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="design_template" value="split_screen_hero" class="hidden" checked onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🌟 Split Screen Hero</h4>
-                                    <div class="text-4xl mb-3 text-center">💼</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Modern, bold split-screen layout with professional photo showcase</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Dark navy + Cyan accent</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Designers, Product Managers, Modern Professionals</p>
+                                <input type="radio" name="design_template" value="developer_dark" class="hidden" checked onchange="toggleManualColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-code theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Developer Dark</h4>
+                                    <p class="theme-subtitle">Code-Style & Purple</p>
+                                    <p class="theme-username">@dev-dark</p>
                                 </div>
                             </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="design_template" value="single_page_scroll" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🌊 Single Page Scroll</h4>
-                                    <div class="text-4xl mb-3 text-center">🎨</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Friendly, colorful design with wave dividers and progress bars</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Vibrant green + Yellow accents</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Developers, Freelancers, Creative Professionals</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="design_template" value="elegant_professional" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">✨ Elegant Professional</h4>
-                                    <div class="text-4xl mb-3 text-center">🏆</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Warm, sophisticated design with curved sections and script fonts</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Forest green + Beige/Pink</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Consultants, Coaches, Corporate Professionals</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="design_template" value="developer_dark" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">💻 Developer Dark</h4>
-                                    <div class="text-4xl mb-3 text-center">👨‍💻</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Dark theme with code-style typography and purple accents</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Charcoal + Purple highlights</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Developers, Coders, Tech Professionals</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="design_template" value="minimal_monochrome" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">⬛ Minimal Monochrome</h4>
-                                    <div class="text-4xl mb-3 text-center">🎯</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Clean black and white design with diagonal split hero and boxed sections</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Black + White + Gray</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Designers, Minimalists, Creative Professionals</p>
-                                </div>
-                            </label>
-                            <label class="theme-option-card" style="cursor: pointer;">
-                                <input type="radio" name="design_template" value="modern_personal" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">💼 Modern Personal</h4>
-                                    <div class="text-4xl mb-3 text-center">👔</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Professional portfolio with bordered skill cards and clean layout</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Black + White contrast</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Developers, Designers, All Professionals</p>
-                                </div>
-                            </label>
+                            
+                            <!-- Dark Anonymous -->
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="design_template" value="dark_anonymous" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🔴 Dark Anonymous</h4>
-                                    <div class="text-4xl mb-3 text-center">🔥</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Dramatic dark theme with red circular glow and vertical navigation</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Black + Red (#FF0055)</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Creative Professionals, Designers, Bold Portfolios</p>
+                                <div class="card-bg" style="background: linear-gradient(135deg, #000000 0%, #FF0055 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-user-secret theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Dark Anonymous</h4>
+                                    <p class="theme-subtitle">Dramatic Red & Black</p>
+                                    <p class="theme-username">@dark-anon</p>
                                 </div>
                             </label>
+                            
+                            <!-- Split Screen Hero -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="split_screen_hero" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-columns theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Split Screen Hero</h4>
+                                    <p class="theme-subtitle">Minimalist & Bold</p>
+                                    <p class="theme-username">@split-hero</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Modern Personal -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="modern_personal" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #434343 0%, #000000 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-briefcase theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Modern Personal</h4>
+                                    <p class="theme-subtitle">Professional & Clean</p>
+                                    <p class="theme-username">@modern-personal</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Elegant Professional -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="elegant_professional" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-gem theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Elegant Professional</h4>
+                                    <p class="theme-subtitle">Warm & Sophisticated</p>
+                                    <p class="theme-username">@elegant-pro</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Minimal Monochrome -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="minimal_monochrome" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-square theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Minimal Monochrome</h4>
+                                    <p class="theme-subtitle">Clean Black & White</p>
+                                    <p class="theme-username">@minimal-bw</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Single Page Scroll -->
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="single_page_scroll" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div class="card-bg" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-water theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Single Page Scroll</h4>
+                                    <p class="theme-subtitle">Friendly & Colorful</p>
+                                    <p class="theme-username">@single-scroll</p>
+                                </div>
+                            </label>
+                            
+                            <!-- Orange Professional -->
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="design_template" value="orange_professional" class="hidden" onchange="toggleManualColorThemes(false)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🟠 Orange Professional</h4>
-                                    <div class="text-4xl mb-3 text-center">🎨</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Modern dark theme with vibrant orange accents and circular progress indicators</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Dark Gray (#1A1A1A) + Orange (#FF6B00)</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: UI/UX Designers, Creative Professionals, Modern Portfolios</p>
+                                <div class="card-bg" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-palette theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Orange Professional</h4>
+                                    <p class="theme-subtitle">Dark & Orange Theme</p>
+                                    <p class="theme-username">@orange-pro</p>
                                 </div>
                             </label>
+                            
+                            <!-- Classic Themes -->
                             <label class="theme-option-card" style="cursor: pointer;">
                                 <input type="radio" name="design_template" value="portfolio_template_new" class="hidden" onchange="toggleManualColorThemes(true)">
-                                <div>
-                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🎭 Classic Themes</h4>
-                                    <div class="text-4xl mb-3 text-center">🎨</div>
-                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Original template with multiple color theme variations</p>
-                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">7 color variations available</p>
-                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Traditional portfolios, All professions</p>
+                                <div class="card-bg" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);"></div>
+                                <div class="card-content">
+                                    <div class="theme-icon-wrapper">
+                                        <i class="fas fa-swatchbook theme-icon"></i>
+                                    </div>
+                                    <h4 class="theme-title">Classic Themes</h4>
+                                    <p class="theme-subtitle">Original Color Variations</p>
+                                    <p class="theme-username">@classic-themes</p>
                                 </div>
                             </label>
                         </div>
@@ -647,7 +796,7 @@
 
                     <!-- Color Theme Selection (Legacy - for fine-tuning) - Only shown when Classic Themes is selected -->
                     <div id="manualColorThemeSection" class="form-section hidden">
-                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">🎨 Choose Color Theme</h3>
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);"><i class="fas fa-palette" style="color: var(--accent-primary);"></i> Choose Color Theme</h3>
                         <p class="text-sm mb-4" style="color: var(--text-secondary);">Select one of the classic color variations:</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                             <label class="theme-option-card">
