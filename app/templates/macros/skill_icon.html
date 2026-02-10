@@ -1,0 +1,158 @@
+{% macro render_skill_icon(skill, size='w-16 h-16') %}
+    {% set skill_lower = skill.lower() %}
+    {% if 'python' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="{{ size }}"/>
+    {% elif 'javascript' in skill_lower or skill_lower == 'js' %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="{{ size }}"/>
+    {% elif 'java' in skill_lower and 'javascript' not in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" class="{{ size }}"/>
+    {% elif 'react' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="{{ size }}"/>
+    {% elif 'node' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" class="{{ size }}"/>
+    {% elif 'html' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="{{ size }}"/>
+    {% elif 'css' in skill_lower and 'tailwind' not in skill_lower and 'sass' not in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" class="{{ size }}"/>
+    {% elif 'c++' in skill_lower or 'cpp' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" class="{{ size }}"/>
+    {% elif skill_lower == 'c' or skill_lower.startswith('c ') or skill_lower.endswith(' c') %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" class="{{ size }}"/>
+    {% elif 'git' in skill_lower and 'langchain' not in skill_lower and 'gitlab' not in skill_lower and 'github' not in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="{{ size }}"/>
+    {% elif 'docker' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" class="{{ size }}"/>
+    {% elif 'mysql' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" class="{{ size }}"/>
+    {% elif 'postgresql' in skill_lower or 'postgres' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" class="{{ size }}"/>
+    {% elif 'sql' in skill_lower and 'mysql' not in skill_lower and 'postgresql' not in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuresqldatabase/azuresqldatabase-original.svg" alt="SQL" class="{{ size }}"/>
+    {% elif 'aws' in skill_lower or 'amazon' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS" class="{{ size }}"/>
+    {% elif 'typescript' in skill_lower or skill_lower == 'ts' %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" class="{{ size }}"/>
+    {% elif 'vue' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" alt="Vue.js" class="{{ size }}"/>
+    {% elif 'angular' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" alt="Angular" class="{{ size }}"/>
+    {% elif 'mongo' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="{{ size }}"/>
+    {% elif 'redis' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis" class="{{ size }}"/>
+    {% elif 'kubernetes' in skill_lower or 'k8s' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes" class="{{ size }}"/>
+    {% elif 'android' in skill_lower and 'studio' not in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android" class="{{ size }}"/>
+    {% elif 'android studio' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/androidstudio/androidstudio-original.svg" alt="Android Studio" class="{{ size }}"/>
+    {% elif 'flutter' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" class="{{ size }}"/>
+    {% elif 'firebase' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase" class="{{ size }}"/>
+    {% elif 'express' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js" class="{{ size }}"/>
+    {% elif 'mern' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MERN Stack" class="{{ size }}"/>
+    {% elif 'vscode' in skill_lower or 'vs code' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" class="{{ size }}"/>
+    {% elif skill_lower == 'go' or 'golang' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Go" class="{{ size }}"/>
+    {% elif 'rust' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg" alt="Rust" class="{{ size }}"/>
+    {% elif 'swift' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Swift" class="{{ size }}"/>
+    {% elif 'kotlin' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Kotlin" class="{{ size }}"/>
+    {% elif 'php' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" class="{{ size }}"/>
+    {% elif 'ruby' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg" alt="Ruby" class="{{ size }}"/>
+    {% elif 'c#' in skill_lower or 'csharp' in skill_lower or skill_lower == 'c sharp' %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C#" class="{{ size }}"/>
+    {% elif 'figma' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="{{ size }}"/>
+    {% elif 'photoshop' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg" alt="Photoshop" class="{{ size }}"/>
+    {% elif 'illustrator' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg" alt="Illustrator" class="{{ size }}"/>
+    {% elif 'tailwind' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind CSS" class="{{ size }}"/>
+    {% elif 'bootstrap' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" class="{{ size }}"/>
+    {% elif 'sass' in skill_lower or 'scss' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="Sass" class="{{ size }}"/>
+    {% elif 'flask' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" alt="Flask" class="{{ size }}"/>
+    {% elif 'django' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django" class="{{ size }}"/>
+    {% elif 'next' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" class="{{ size }}"/>
+    {% elif 'nuxt' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nuxtjs/nuxtjs-original.svg" alt="Nuxt.js" class="{{ size }}"/>
+    {% elif 'linux' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" class="{{ size }}"/>
+    {% elif 'ubuntu' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-plain.svg" alt="Ubuntu" class="{{ size }}"/>
+    {% elif 'debian' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-original.svg" alt="Debian" class="{{ size }}"/>
+    {% elif 'azure' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" alt="Azure" class="{{ size }}"/>
+    {% elif 'gcp' in skill_lower or 'google cloud' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud" class="{{ size }}"/>
+    {% elif 'pytorch' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" alt="PyTorch" class="{{ size }}"/>
+    {% elif 'tensorflow' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow" class="{{ size }}"/>
+    {% elif 'numpy' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" alt="NumPy" class="{{ size }}"/>
+    {% elif 'pandas' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" alt="Pandas" class="{{ size }}"/>
+    {% elif 'jupyter' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg" alt="Jupyter" class="{{ size }}"/>
+    {% elif 'fastapi' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" class="{{ size }}"/>
+    {% elif 'graphql' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg" alt="GraphQL" class="{{ size }}"/>
+    {% elif 'jest' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="Jest" class="{{ size }}"/>
+    {% elif 'webpack' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/webpack/webpack-original.svg" alt="Webpack" class="{{ size }}"/>
+    {% elif 'babel' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/babel/babel-original.svg" alt="Babel" class="{{ size }}"/>
+    {% elif 'redux' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" alt="Redux" class="{{ size }}"/>
+    {% elif 'material' in skill_lower and 'ui' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/materialui/materialui-original.svg" alt="Material-UI" class="{{ size }}"/>
+    {% elif 'nginx' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="Nginx" class="{{ size }}"/>
+    {% elif 'apache' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original.svg" alt="Apache" class="{{ size }}"/>
+    {% elif 'jenkins' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins" class="{{ size }}"/>
+    {% elif 'github' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="{{ size }}"/>
+    {% elif 'gitlab' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg" alt="GitLab" class="{{ size }}"/>
+    {% elif 'bitbucket' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bitbucket/bitbucket-original.svg" alt="Bitbucket" class="{{ size }}"/>
+    {% elif '.net' in skill_lower or 'dotnet' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" alt=".NET" class="{{ size }}"/>
+    {% elif 'svelte' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg" alt="Svelte" class="{{ size }}"/>
+    {% elif 'electron' in skill_lower %}
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" alt="Electron" class="{{ size }}"/>
+    {% elif 'langchain' in skill_lower %}
+        <svg class="{{ size }}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    {% elif 'llama' in skill_lower or 'llamaindex' in skill_lower %}
+        <svg class="{{ size }}" viewBox="0 0 512 512" fill="currentColor"><path d="M256 32c-52.3 0-97.8 28.2-122.5 70.2-6.7-3.8-14.4-6-22.7-6-26.5 0-48 21.5-48 48 0 5.1.8 10 2.3 14.6C27.8 177.9 0 216.2 0 261c0 68.5 55.5 124 124 124h264c68.5 0 124-55.5 124-124 0-44.8-27.8-83.1-67.1-98.8 1.5-4.6 2.3-9.5 2.3-14.6 0-26.5-21.5-48-48-48-8.3 0-16 2.2-22.7 6C351.8 60.2 306.3 32 256 32z"/></svg>
+    {% elif 'wear' in skill_lower and 'os' in skill_lower %}
+        <svg class="{{ size }}" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="3"/></svg>
+    {% elif 'mobile' in skill_lower and 'sensor' in skill_lower %}
+        <svg class="{{ size }}" viewBox="0 0 24 24" fill="currentColor"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg>
+    {% else %}
+        <div class="{{ size }} bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center font-bold text-xl">
+            {{ skill[:2].upper() }}
+        </div>
+    {% endif %}
+{% endmacro %}

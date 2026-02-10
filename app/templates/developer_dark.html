@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    <base target="_self">    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fira Code', monospace;
+            background: #282C33;
+            color: #ABB2BF;
+            overflow-x: hidden;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Purple accent color */
+        .accent-purple {
+            color: #C778DD;
+        }
+        
+        .accent-bg-purple {
+            background: #C778DD;
+        }
+        
+        /* Decorative squares */
+        .deco-square {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 1px solid #ABB2BF;
+            opacity: 0.3;
+        }
+        
+        .deco-square-purple {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #C778DD;
+            opacity: 0.5;
+        }
+        
+        /* Dot pattern */
+        .dot-pattern {
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+        
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: #ABB2BF;
+            opacity: 0.3;
+        }
+        
+        /* Section headers */
+        .section-header {
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header::before {
+            content: '#';
+            color: #C778DD;
+            margin-right: 8px;
+        }
+        
+        .section-header::after {
+            content: '';
+            display: inline-block;
+            width: 200px;
+            height: 1px;
+            background: #C778DD;
+            margin-left: 16px;
+            vertical-align: middle;
+        }
+        
+        /* Navigation */
+        .nav-link {
+            color: #ABB2BF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-link::before {
+            content: '#';
+            color: #C778DD;
+        }
+        
+        .nav-link:hover {
+            color: white;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 40;
+        }
+        
+        .sidebar::before {
+            content: '';
+            width: 1px;
+            height: 150px;
+            background: #ABB2BF;
+            margin: 0 auto 16px;
+        }
+        
+        .sidebar-icon {
+            width: 32px;
+            height: 32px;
+            color: #ABB2BF;
+            transition: color 0.3s;
+        }
+        
+        .sidebar-icon:hover {
+            color: white;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            border: 1px solid #C778DD;
+            color: white;
+            padding: 8px 16px;
+            background: transparent;
+            transition: all 0.3s;
+            font-family: 'Fira Code', monospace;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: rgba(199, 120, 221, 0.2);
+        }
+        
+        .btn-secondary {
+            border: 1px solid #ABB2BF;
+            color: #ABB2BF;
+            padding: 6px 12px;
+            background: transparent;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(171, 178, 191, 0.1);
+            color: white;
+        }
+        
+        /* Project cards */
+        .project-card {
+            border: 1px solid #ABB2BF;
+            background: #282C33;
+            transition: all 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #C778DD;
+        }
+        
+        .project-image {
+            border-bottom: 1px solid #ABB2BF;
+            height: 200px;
+            background: #1E2028;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tech-tag {
+            color: #ABB2BF;
+            font-size: 0.875rem;
+        }
+        
+        /* Quote box */
+        .quote-box {
+            border: 1px solid #ABB2BF;
+            padding: 2rem;
+            position: relative;
+            background: #282C33;
+        }
+        
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 3rem;
+            color: #ABB2BF;
+        }
+        
+        .quote-box::after {
+            content: '"';
+            position: absolute;
+            bottom: -20px;
+            right: 20px;
+            font-size: 3rem;
+            color: #ABB2BF;
+        }
+        
+        /* Skills boxes */
+        .skill-category {
+            border: 1px solid #ABB2BF;
+        }
+        
+        .skill-category-header {
+            border-bottom: 1px solid #ABB2BF;
+            padding: 8px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .skill-list {
+            padding: 8px;
+            color: #ABB2BF;
+            font-size: 0.875rem;
+        }
+        
+        /* Status box */
+        .status-box {
+            border: 1px solid #ABB2BF;
+            padding: 8px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            background: #C778DD;
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: #282C33;
+            border-left: 1px solid #ABB2BF;
+            padding: 2rem;
+            transition: right 0.3s;
+            z-index: 100;
+        }
+        
+        .mobile-menu.open {
+            right: 0;
+        }
+        
+        /* Contact card */
+        .contact-card {
+            border: 1px solid #ABB2BF;
+            padding: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .section-header::after {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button id="mobileMenuBtn" class="fixed top-6 right-6 z-50 md:hidden text-white">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <button id="closeMobileMenu" class="absolute top-6 right-6 text-white">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        
+        <nav class="flex flex-col gap-6 mt-16">
+            <a href="#home" class="nav-link text-xl">home</a>
+            <a href="#works" class="nav-link text-xl">works</a>
+            <a href="#about-me" class="nav-link text-xl">about-me</a>
+            <a href="#contacts" class="nav-link text-xl">contacts</a>
+        </nav>
+        
+        <div class="mt-12 flex gap-4">
+            {% if personal_info.github %}
+            <a href="{{ personal_info.github }}" target="_blank" class="sidebar-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            {% endif %}
+            {% if personal_info.linkedin %}
+            <a href="{{ personal_info.linkedin }}" target="_blank" class="sidebar-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sidebar (Desktop) -->
+    <div class="sidebar hidden md:flex">
+        {% if personal_info.github %}
+        <a href="{{ personal_info.github }}" target="_blank" class="sidebar-icon">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        {% endif %}
+        {% if personal_info.linkedin %}
+        <a href="{{ personal_info.linkedin }}" target="_blank" class="sidebar-icon">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="fixed top-0 w-full bg-opacity-95 backdrop-blur-sm z-40" style="background: rgba(40, 44, 51, 0.95);">
+        <div class="container mx-auto px-6 md:px-12 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 border-2 border-white"></div>
+                <span class="text-white font-bold">{{ personal_info.name.split()[0] }}</span>
+            </div>
+            
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#home" class="nav-link">home</a>
+                <a href="#works" class="nav-link">works</a>
+                <a href="#about-me" class="nav-link">about-me</a>
+                <a href="#contacts" class="nav-link">contacts</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Decorative elements -->
+    <div class="deco-square-purple" style="top: 100px; right: 150px;"></div>
+    <div class="dot-pattern" style="top: 300px; left: 100px;">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 px-6 md:px-12 min-h-screen flex items-center relative">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left: Text -->
+                <div>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-8 leading-tight">
+                        {{ personal_info.name.split()[0] }} is a <span class="accent-purple">{{ personal_info.title or 'professional' }}</span>
+                    </h1>
+                    
+                    <p class="text-lg mb-8">
+                        {% if personal_info.bio %}
+                        {{ personal_info.bio[:150] }}{% if personal_info.bio|length > 150 %}...{% endif %}
+                        {% else %}
+                        Crafting innovative solutions where technology meets creativity
+                        {% endif %}
+                    </p>
+                    
+                    <a href="#contacts" class="btn-primary inline-block">Contact me!!</a>
+                </div>
+                
+                <!-- Right: Photo -->
+                <div class="relative">
+                    <div class="deco-square-purple" style="top: 20px; left: 20px;"></div>
+                    {% if personal_info.photo %}
+                    <img src="{{ personal_info.photo }}" alt="{{ personal_info.name }}" 
+                         class="relative z-10 w-full max-w-md mx-auto" style="filter: grayscale(100%);">
+                    {% else %}
+                    <div class="relative z-10 w-full max-w-md mx-auto aspect-square bg-gray-700 flex items-center justify-center">
+                        <div class="text-8xl font-bold text-gray-500">{{ personal_info.name[0] }}</div>
+                    </div>
+                    {% endif %}
+                    <div class="dot-pattern absolute bottom-0 right-0" style="bottom: -20px; right: -20px;">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                    
+                    <!-- Status box -->
+                    <div class="status-box mt-8 mx-auto" style="width: fit-content;">
+                        <div class="status-indicator"></div>
+                        <span>Currently working on <span class="font-bold">Portfolio</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-4xl">
+            <div class="quote-box">
+                {% set tech_quotes = [
+                    {"quote": "With great power comes great electricity bill", "author": "Unknown Developer"},
+                    {"quote": "First, solve the problem. Then, write the code", "author": "John Johnson"},
+                    {"quote": "Code is like humor. When you have to explain it, it's bad", "author": "Cory House"},
+                    {"quote": "The best error message is the one that never shows up", "author": "Thomas Fuchs"},
+                    {"quote": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand", "author": "Martin Fowler"},
+                    {"quote": "Make it work, make it right, make it fast", "author": "Kent Beck"},
+                    {"quote": "Talk is cheap. Show me the code", "author": "Linus Torvalds"},
+                    {"quote": "Simplicity is the soul of efficiency", "author": "Austin Freeman"}
+                ] %}
+                {% set random_quote = tech_quotes[range(0, tech_quotes|length)|random] %}
+                <p class="text-xl md:text-2xl text-white mb-4">
+                    "{{ random_quote.quote }}"
+                </p>
+                <p class="text-right">- {{ random_quote.author }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    {% if projects %}
+    <section id="works" class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="section-header">#projects</h2>
+                <a href="#works" class="text-white hover:accent-purple transition">View all ~~&gt;</a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                {% for project in projects[:6] %}
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="text-6xl">{{ project.title[0] }}</div>
+                    </div>
+                    <div class="border-b border-gray-600 p-3">
+                        <p class="tech-tag">{{ project.tech_stack or 'HTML CSS Python' }}</p>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-white font-semibold text-xl mb-3">{{ project.title }}</h3>
+                        <p class="text-sm mb-4">{{ project.description[:80] }}...</p>
+                        <div class="flex gap-3">
+                            {% if project.link %}
+                            <a href="{{ project.link }}" target="_blank" class="btn-secondary">Live &lt;~&gt;</a>
+                            {% else %}
+                            <button class="btn-secondary">Cached &gt;</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Skills Section -->
+    {% if skills %}
+    <section id="skills" class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header">#skills</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Decorative shapes -->
+                <div class="relative">
+                    <div class="deco-square" style="top: 50px; left: 50px;"></div>
+                    <div class="deco-square-purple" style="bottom: 100px; right: 100px;"></div>
+                    <div class="dot-pattern absolute" style="top: 20%; left: 20%;">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                </div>
+                
+                <!-- Skills categories -->
+                <div class="space-y-6">
+                    <div class="skill-category">
+                        <div class="skill-category-header">Languages</div>
+                        <div class="skill-list">{{ skills[:4]|join(' ') }}</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-category-header">Tools</div>
+                        <div class="skill-list">{{ skills[4:8]|join(' ') if skills|length > 4 else skills|join(' ') }}</div>
+                    </div>
+                    
+                    {% if skills|length > 8 %}
+                    <div class="skill-category">
+                        <div class="skill-category-header">Frameworks</div>
+                        <div class="skill-list">{{ skills[8:]|join(' ') }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- About Me Section -->
+    <section id="about-me" class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header">#about-me</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-lg leading-relaxed mb-6">
+                        {% if personal_info.bio %}
+                        {{ personal_info.bio }}
+                        {% else %}
+                        Hello, i'm {{ personal_info.name.split()[0] }}!
+                        <br><br>
+                        I'm a passionate professional dedicated to creating innovative solutions. I transform ideas into reality, building modern applications and experiences from the ground up.
+                        <br><br>
+                        Transforming creativity and knowledge into impactful projects has been my passion. I help clients achieve their goals and establish their presence. I always strive to learn about the newest technologies and best practices.
+                        {% endif %}
+                    </p>
+                    <a href="#contacts" class="btn-primary inline-block">Read more -&gt;</a>
+                </div>
+                
+                <div class="relative">
+                    {% if personal_info.photo %}
+                    <img src="{{ personal_info.photo }}" alt="{{ personal_info.name }}" 
+                         class="w-full max-w-md mx-auto" style="filter: grayscale(100%);">
+                    {% else %}
+                    <div class="w-full max-w-md mx-auto aspect-square bg-gray-700 flex items-center justify-center">
+                        <div class="text-8xl font-bold text-gray-500">{{ personal_info.name[0] }}</div>
+                    </div>
+                    {% endif %}
+                    <div class="dot-pattern absolute" style="bottom: -20px; right: -20px;">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (if available) -->
+    {% if experience %}
+    <section class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header">#experience</h2>
+            
+            <div class="space-y-8">
+                {% for job in experience %}
+                <div class="border border-gray-600 p-6 hover:border-purple-500 transition">
+                    <div class="flex flex-wrap justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-white text-2xl font-semibold mb-2">{{ job.role }}</h3>
+                            <p class="accent-purple font-semibold">{{ job.company }}</p>
+                        </div>
+                        <span class="text-gray-400">{{ job.start_date }} - {{ job.end_date or 'Present' }}</span>
+                    </div>
+                    <p class="text-gray-300 whitespace-pre-line">{{ job.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if education %}
+    <section class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header">#education</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                {% for edu in education %}
+                <div class="border border-gray-600 p-6 hover:border-purple-500 transition">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="text-4xl">🎓</div>
+                        <div class="flex-1">
+                            <h3 class="text-white text-xl font-semibold mb-2">{{ edu.degree }}</h3>
+                            <p class="accent-purple font-semibold mb-2">{{ edu.school }}</p>
+                            <p class="text-gray-400 text-sm">{{ edu.year }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Contacts Section -->
+    <section id="contacts" class="py-20 px-6 md:px-12 relative">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-header">#contacts</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <p class="text-lg mb-8">
+                        I'm interested in freelance opportunities. However, if you have other request or question, don't hesitate to contact me
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="contact-card">
+                        <h3 class="text-white font-semibold mb-4">Message me here</h3>
+                        {% if personal_info.email %}
+                        <div class="flex items-center gap-3 mb-3">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                            <a href="mailto:{{ personal_info.email }}" class="hover:text-white">{{ personal_info.email }}</a>
+                        </div>
+                        {% endif %}
+                        {% if personal_info.linkedin %}
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            <a href="{{ personal_info.linkedin }}" target="_blank" class="hover:text-white">LinkedIn</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if personal_info.phone %}
+                    <div class="contact-card">
+                        <h3 class="text-white font-semibold mb-4">Support me here</h3>
+                        <p>{{ personal_info.phone }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- All media -->
+            <div class="mt-12">
+                <h3 class="accent-purple mb-4">#all-media</h3>
+                <div class="flex gap-6">
+                    {% if personal_info.github %}
+                    <a href="{{ personal_info.github }}" target="_blank" class="hover:text-white">@{{ personal_info.name.split()[0].lower() }}</a>
+                    {% endif %}
+                    {% if personal_info.linkedin %}
+                    <a href="{{ personal_info.linkedin }}" target="_blank" class="hover:text-white">@{{ personal_info.name.split()[0].lower() }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 md:px-12 border-t border-gray-600">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-wrap justify-between items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 border-2 border-white"></div>
+                        <span class="text-white font-bold">{{ personal_info.name.split()[0] }}</span>
+                    </div>
+                    <span>{{ personal_info.email or 'contact@example.com' }}</span>
+                </div>
+                
+                <p class="text-center">{{ personal_info.title or 'Software Developer' }}</p>
+            </div>
+            
+            <div class="text-center mt-8 text-sm">
+                <p>&copy; Copyright 2026. Made by {{ personal_info.name }}</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn?.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+
+        closeMobileMenu?.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

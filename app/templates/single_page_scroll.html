@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    <base target="_self">    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #FFFFFF;
+            color: #333333;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Wave Divider */
+        .wave-divider {
+            position: relative;
+            background: linear-gradient(180deg, #4CAF50 0%, #45A049 100%);
+            padding: 60px 0;
+        }
+        
+        .wave-divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%23FFFFFF'/%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%23FFFFFF'/%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat;
+            background-size: cover;
+            transform: translateY(-100%);
+        }
+        
+        .wave-divider::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%23FFFFFF'/%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%23FFFFFF'/%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat;
+            background-size: cover;
+            transform: translateY(100%) scaleY(-1);
+        }
+        
+        /* Profile Photo */
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50 0%, #45A049 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 20px 60px rgba(76, 175, 80, 0.3);
+            margin: 0 auto;
+        }
+        
+        /* Social Icons */
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45A049 100%);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #4CAF50;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            border: 2px solid #4CAF50;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        /* Progress Bar */
+        .skill-progress {
+            height: 12px;
+            background: #E0E0E0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .skill-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50 0%, #FFC107 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        
+        /* Work Card */
+        .work-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .work-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+        }
+        
+        /* Filter Tabs */
+        .filter-tab {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background: #F5F5F5;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .filter-tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navigation -->
+    <nav class="fixed top-0 w-full bg-white shadow-md z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold" style="color: #4CAF50;">{{ personal_info.name.split()[0] }}</div>
+            
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#home" class="text-gray-700 hover:text-green-600 font-semibold transition">Home</a>
+                <a href="#about" class="text-gray-700 hover:text-green-600 font-semibold transition">About Me</a>
+                <a href="#portfolio" class="text-gray-700 hover:text-green-600 font-semibold transition">Portfolio</a>
+                <a href="resume.pdf" download="{{ personal_info.name }}_Resume.pdf" 
+                   class="bg-green-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-600 transition">
+                    Contact Me
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-16 px-6 text-center">
+        <p class="text-gray-600 mb-4 font-semibold">{{ (personal_info.title or 'SOFTWARE DEVELOPER')|upper }}</p>
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-8">
+            I am <span style="color: #4CAF50;">{{ personal_info.name }}</span>
+        </h1>
+        
+        {% if personal_info.bio %}
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            {{ personal_info.bio }}
+        </p>
+        {% endif %}
+        
+        <!-- Profile Photo -->
+        <div class="profile-photo mb-8">
+            {% if personal_info.photo %}
+            <img src="{{ personal_info.photo }}" alt="{{ personal_info.name }}" class="w-full h-full object-cover rounded-full">
+            {% else %}
+            {{ personal_info.name[0] }}
+            {% endif %}
+        </div>
+        
+        <!-- Social Icons -->
+        <div class="flex justify-center gap-4 mb-8">
+            {% if personal_info.email %}
+            <a href="mailto:{{ personal_info.email }}" class="social-icon" style="background: #FF5722;" title="Email">
+                <span style="color: white;">📧</span>
+            </a>
+            {% endif %}
+            {% if personal_info.linkedin %}
+            <a href="{{ personal_info.linkedin }}" target="_blank" class="social-icon" style="background: #0077B5;" title="LinkedIn">
+                <span style="color: white;">💼</span>
+            </a>
+            {% endif %}
+            {% if personal_info.github %}
+            <a href="{{ personal_info.github }}" target="_blank" class="social-icon" style="background: #333333;" title="GitHub">
+                <span style="color: white;">💻</span>
+            </a>
+            {% endif %}
+        </div>
+        
+        <!-- CTA Buttons -->
+        <div class="flex justify-center gap-4 flex-wrap">
+            <a href="#portfolio" class="btn-primary text-white no-underline">
+                Get My Work
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a href="./resume.pdf" download="{{ personal_info.name }}_Resume.pdf" class="btn-outline no-underline">
+                Hire Me →
+            </a>
+        </div>
+    </section>
+
+    <!-- Wave Divider -->
+    <div class="wave-divider">
+        <div class="container mx-auto px-6 text-center text-white">
+            <h2 class="text-4xl font-bold mb-4">Let's Build Something Amazing</h2>
+            <p class="text-xl">Ready to bring your ideas to life</p>
+        </div>
+    </div>
+
+    <!-- About Me Section -->
+    <section id="about" class="py-20 px-6 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <p class="text-green-600 font-bold mb-2">ABOUT ME ──────</p>
+                <h2 class="text-4xl font-extrabold mb-4">Who Am I</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-3xl font-bold mb-4">Hello! I'm creative and passionate</h3>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        {% if personal_info.bio %}
+                        {{ personal_info.bio }}
+                        {% else %}
+                        I'm at the intersection of creativity and technology. I love building beautiful, functional experiences that make a difference.
+                        {% endif %}
+                    </p>
+                    {% if personal_info.email %}
+                    <a href="mailto:{{ personal_info.email }}" class="btn-primary text-white no-underline">
+                        Get In Touch
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    {% if skills %}
+                    <div class="bg-gray-50 rounded-2xl p-8">
+                        <h4 class="font-bold text-xl mb-6 text-green-600">Core Competencies</h4>
+                        <div class="flex flex-wrap gap-3">
+                            {% for skill in skills[:12] %}
+                            <span class="px-4 py-2 bg-white rounded-full text-sm font-semibold text-gray-700 border-2 border-green-200">
+                                {{ skill }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    {% if experience %}
+    <section id="work" class="py-20 px-6 bg-gray-50">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <p class="text-green-600 font-bold mb-2">MY JOURNEY ──────</p>
+                <h2 class="text-4xl font-extrabold">Work Experience</h2>
+            </div>
+            
+            <div class="space-y-8">
+                {% for job in experience %}
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-green-500 hover:shadow-xl transition">
+                    <div class="flex flex-wrap justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">{{ job.role }}</h3>
+                            <p class="text-green-600 font-semibold text-lg">{{ job.company }}</p>
+                        </div>
+                        <span class="text-gray-500 font-medium">{{ job.start_date }} - {{ job.end_date or 'Present' }}</span>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ job.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if education %}
+    <section class="py-20 px-6 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <p class="text-green-600 font-bold mb-2">EDUCATION ──────</p>
+                <h2 class="text-4xl font-extrabold">Academic Background</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                {% for edu in education %}
+                <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-8 hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">🎓</div>
+                    <h3 class="text-xl font-bold mb-2">{{ edu.degree }}</h3>
+                    <p class="text-green-600 font-semibold mb-2">{{ edu.school }}</p>
+                    <p class="text-gray-600">{{ edu.year }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Skills Section -->
+    {% if skills %}
+    <section class="py-20 px-6 bg-gray-50">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12">
+                <p class="text-green-600 font-bold mb-2">MY EXPERTISE ──────</p>
+                <h2 class="text-4xl font-extrabold">Skill Set</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                {% set skill_percentages = [85, 90, 88, 92, 87, 89, 91, 86] %}
+                {% for skill in skills[:8] %}
+                {% set percentage = skill_percentages[loop.index0 % 8] %}
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">{{ skill }}</span>
+                        <span class="text-gray-600">{{ percentage }}%</span>
+                    </div>
+                    <div class="skill-progress">
+                        <div class="skill-progress-bar" style="width: {{ percentage }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- My Work Section -->
+    {% if projects %}
+    <section id="portfolio" class="py-20 px-6 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <p class="text-green-600 font-bold mb-2">MY PORTFOLIO ──────</p>
+                <h2 class="text-4xl font-extrabold mb-8">My Work</h2>
+                
+                <!-- Filter Tabs -->
+                <div class="flex justify-center gap-3 mb-12 flex-wrap">
+                    <button class="filter-tab active">All</button>
+                    <button class="filter-tab">Web Development</button>
+                    <button class="filter-tab">UI/UX Design</button>
+                    <button class="filter-tab">Logo Design</button>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                {% for project in projects %}
+                <div class="work-card">
+                    <div class="bg-gradient-to-br from-green-400 to-blue-500 h-48 rounded-lg mb-4 flex items-center justify-center text-white text-5xl font-bold">
+                        {{ project.title[0] }}
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">{{ project.title }}</h3>
+                    <p class="text-green-600 text-sm mb-3 font-semibold">{{ project.tech_stack }}</p>
+                    <p class="text-gray-600 text-sm mb-4">{{ project.description[:100] }}...</p>
+                    {% if project.link %}
+                    <a href="{{ project.link }}" target="_blank" 
+                       class="text-green-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">
+                        View More →
+                    </a>
+                    {% else %}
+                    <a href="#" class="text-green-600 font-semibold text-sm hover:underline inline-flex items-center gap-1">
+                        View More →
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Hire Me Section -->
+    <section class="py-20 px-6 bg-gradient-to-br from-green-50 to-blue-50">
+        <div class="container mx-auto max-w-4xl text-center">
+            <div class="text-6xl mb-8">💼</div>
+            <h2 class="text-4xl font-extrabold mb-6">Hire Me</h2>
+            <p class="text-xl text-gray-600 mb-4">100% Satisfaction Guaranteed</p>
+            
+            <div class="grid md:grid-cols-3 gap-6 my-12">
+                <div>
+                    <div class="text-green-600 mb-2">✓</div>
+                    <p class="font-semibold">Top level experience</p>
+                </div>
+                <div>
+                    <div class="text-green-600 mb-2">✓</div>
+                    <p class="font-semibold">24/7 Days Support</p>
+                </div>
+                <div>
+                    <div class="text-green-600 mb-2">✓</div>
+                    <p class="font-semibold">One Time Project, you are satisfied</p>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto">
+                <form class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="Full Name" 
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                        <input type="email" placeholder="Email Address" 
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none">
+                    </div>
+                    <textarea placeholder="Message" rows="5"
+                              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none"></textarea>
+                    
+                    {% if personal_info.email %}
+                    <a href="mailto:{{ personal_info.email }}" class="btn-primary text-white no-underline w-full justify-center">
+                        Send →
+                    </a>
+                    {% else %}
+                    <button type="button" class="btn-primary w-full justify-center">
+                        Send →
+                    </button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 bg-green-600 text-white text-center">
+        <h3 class="text-2xl font-bold mb-4">Build With Pride and Big Effort</h3>
+        <p class="mb-6">{{ personal_info.email or 'contact@example.com' }} | {{ personal_info.phone or '+1 (555) 123-4567' }}</p>
+        <p class="text-sm opacity-80">&copy; 2026 {{ personal_info.name }}. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+{% from 'macros/skill_icon.html' import render_skill_icon %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Red/Pink accent color */
+        :root {
+            --accent-red: #FF0055;
+            --accent-glow: rgba(255, 0, 85, 0.4);
+        }
+        
+        /* Logo */
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--accent-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent-red);
+        }
+        
+        /* Vertical Navigation */
+        .vertical-nav {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            z-index: 50;
+        }
+        
+        .vertical-nav a {
+            display: block;
+            margin: 3rem 0;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            transition: color 0.3s;
+        }
+        
+        .vertical-nav a:hover {
+            color: var(--accent-red);
+        }
+        
+        /* Red Circle Glow Effect */
+        .red-circle-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-red) 0%, transparent 70%);
+            opacity: 0.6;
+            filter: blur(40px);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        /* Profile Photo Circle */
+        .profile-circle {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid var(--accent-red);
+            box-shadow: 0 0 60px var(--accent-glow);
+        }
+        
+        .profile-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+        }
+        
+        /* Social Icons */
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all 0.3s;
+            border-radius: 50%;
+        }
+        
+        .social-icon:hover {
+            color: var(--accent-red);
+            background: rgba(255, 0, 85, 0.1);
+        }
+        
+        /* Section styling */
+        .section-minimal {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+        
+        /* Text animations */
+        .text-accent {
+            color: var(--accent-red);
+        }
+        
+        .text-outline {
+            -webkit-text-stroke: 2px var(--accent-red);
+            color: transparent;
+        }
+        
+        /* Project/Work cards */
+        .dark-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 85, 0.2);
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .dark-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-red);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .vertical-nav {
+                display: none;
+            }
+            
+            .profile-circle {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .red-circle-glow {
+                width: 350px;
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Vertical Navigation (Right Side) -->
+    <div class="vertical-nav hidden md:block">
+        <a href="#about">ABOUT</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#contact">CONTACT</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen relative flex items-center justify-center">
+        <!-- Top Left Logo -->
+        <div class="absolute top-8 left-8 flex items-center gap-4 z-10">
+            <div class="logo-circle">
+                {{ personal_info.name[0] }}
+            </div>
+            <span class="text-accent font-bold text-xl tracking-wider">{{ personal_info.name.split()[0][:8].upper() }}</span>
+        </div>
+        
+        <!-- Top Right Name -->
+        <div class="absolute top-8 right-24 md:right-32 text-right z-10">
+            {% set name_parts = personal_info.name.split() %}
+            <div class="text-accent font-black text-2xl md:text-4xl tracking-wider">
+                {{ name_parts[0].upper() if name_parts|length > 0 else '' }}
+            </div>
+            <div class="text-accent font-black text-2xl md:text-4xl tracking-wider">
+                {{ name_parts[1].upper() if name_parts|length > 1 else '' }}
+            </div>
+        </div>
+        
+        <!-- Center: Profile Photo with Red Glow -->
+        <div class="relative flex items-center justify-center">
+            <div class="red-circle-glow"></div>
+            <div class="profile-circle relative z-10">
+                {% if personal_info.photo %}
+                <img src="{{ personal_info.photo }}" alt="{{ personal_info.name }}">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-gray-900 text-9xl font-black">
+                    {{ personal_info.name[0] }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Bottom Left Title -->
+        <div class="absolute bottom-12 left-8 z-10">
+            <h2 class="text-4xl font-light mb-2">{{ personal_info.title or 'Professional' }}</h2>
+            <p class="text-xl">From <span class="text-accent font-bold">{{ personal_info.location or 'IN' }}</span></p>
+        </div>
+        
+        <!-- Bottom Right Social Icons -->
+        <div class="absolute bottom-12 right-8 md:right-32 flex gap-4 z-10">
+            {% if personal_info.twitter %}
+            <a href="{{ personal_info.twitter }}" target="_blank" class="social-icon">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+            </a>
+            {% endif %}
+            {% if personal_info.linkedin %}
+            <a href="{{ personal_info.linkedin }}" target="_blank" class="social-icon">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            {% endif %}
+            {% if personal_info.github %}
+            <a href="{{ personal_info.github }}" target="_blank" class="social-icon">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            {% endif %}
+            {% if personal_info.email %}
+            <a href="mailto:{{ personal_info.email }}" class="social-icon">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+            </a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-minimal">
+        <div class="container mx-auto max-w-4xl px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-12">
+                <span class="text-outline">ABOUT</span> <span class="text-accent">ME</span>
+            </h2>
+            
+            <div class="space-y-6 text-lg text-gray-300 leading-relaxed">
+                {% if personal_info.bio %}
+                <p>{{ personal_info.bio }}</p>
+                {% else %}
+                <p>I'm a creative professional specializing in crafting unique digital experiences. With a passion for design and technology, I bring ideas to life through innovative solutions.</p>
+                <p>My approach combines technical expertise with creative vision, ensuring every project not only looks exceptional but performs flawlessly.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    {% if skills %}
+    <section class="section-minimal">
+        <div class="container mx-auto max-w-6xl px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-12 text-center">
+                <span class="text-outline">MY</span> <span class="text-accent">SKILLS</span>
+            </h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                {% for skill in skills %}
+                <div class="dark-card text-center">
+                    <div class="mb-4 flex items-center justify-center">
+                        {{ render_skill_icon(skill) }}
+                    </div>
+                    <h3 class="font-semibold text-sm">{{ skill }}</h3>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Experience Section -->
+    {% if experience %}
+    <section class="section-minimal">
+        <div class="container mx-auto max-w-5xl px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-12 text-center">
+                <span class="text-outline">MY</span> <span class="text-accent">EXPERIENCE</span>
+            </h2>
+            
+            <div class="space-y-6">
+                {% for job in experience %}
+                <div class="dark-card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-accent mb-2">{{ job.role }}</h3>
+                            <p class="text-xl text-gray-300">{{ job.company }}</p>
+                        </div>
+                        <span class="text-sm text-gray-500">{{ job.start_date }} - {{ job.end_date or 'Present' }}</span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed whitespace-pre-line">{{ job.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Education Section -->
+    {% if education %}
+    <section class="section-minimal">
+        <div class="container mx-auto max-w-5xl px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-12 text-center">
+                <span class="text-outline">MY</span> <span class="text-accent">EDUCATION</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                {% for edu in education %}
+                <div class="dark-card">
+                    <div class="text-4xl mb-4 text-accent">🎓</div>
+                    <h3 class="text-xl font-bold mb-2">{{ edu.degree }}</h3>
+                    <p class="text-gray-300 font-semibold mb-2">{{ edu.school }}</p>
+                    <p class="text-sm text-gray-500">{{ edu.year }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Projects Section -->
+    {% if projects %}
+    <section id="projects" class="section-minimal">
+        <div class="container mx-auto max-w-6xl px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-12 text-center">
+                <span class="text-outline">MY</span> <span class="text-accent">PROJECTS</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                {% for project in projects %}
+                <div class="dark-card">
+                    <div class="text-6xl font-black text-accent mb-4 opacity-20">{{ '%02d'|format(loop.index) }}</div>
+                    <h3 class="text-2xl font-bold mb-4">{{ project.title }}</h3>
+                    <p class="text-gray-400 mb-4 leading-relaxed">{{ project.description }}</p>
+                    {% if project.tech_stack %}
+                    <p class="text-sm text-gray-600 mb-4">{{ project.tech_stack }}</p>
+                    {% endif %}
+                    {% if project.link %}
+                    <a href="{{ project.link }}" target="_blank" class="inline-flex items-center gap-2 text-accent hover:underline">
+                        <span>View Project</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-minimal">
+        <div class="container mx-auto max-w-4xl px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-12 text-center">
+                <span class="text-outline">GET IN</span> <span class="text-accent">TOUCH</span>
+            </h2>
+            
+            <div class="text-center space-y-6">
+                {% if personal_info.email %}
+                <a href="mailto:{{ personal_info.email }}" class="block text-3xl font-bold text-accent hover:underline">
+                    {{ personal_info.email }}
+                </a>
+                {% endif %}
+                
+                {% if personal_info.phone %}
+                <p class="text-2xl text-gray-300">{{ personal_info.phone }}</p>
+                {% endif %}
+                
+                <div class="flex justify-center gap-6 pt-8">
+                    {% if personal_info.github %}
+                    <a href="{{ personal_info.github }}" target="_blank" class="social-icon">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                    {% endif %}
+                    {% if personal_info.linkedin %}
+                    <a href="{{ personal_info.linkedin }}" target="_blank" class="social-icon">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    {% endif %}
+                    {% if personal_info.twitter %}
+                    <a href="{{ personal_info.twitter }}" target="_blank" class="social-icon">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-900">
+        <div class="container mx-auto max-w-6xl flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="logo-circle" style="width: 40px; height: 40px; font-size: 1.25rem;">
+                    {{ personal_info.name[0] }}
+                </div>
+                <span class="text-accent font-bold tracking-wider">{{ personal_info.name.split()[0][:8].upper() }}</span>
+            </div>
+            
+            <div class="text-sm text-gray-600">
+                © 2026 {{ personal_info.name }}
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

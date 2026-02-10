@@ -39,6 +39,7 @@ class PersonalInfo(BaseModel):
     github: Optional[HttpUrl] = Field(None, description="GitHub profile URL")
     bio: Optional[str] = Field(None, max_length=500, description="Short professional summary")
     location: Optional[str] = Field(None, max_length=100, description="City, Country")
+    photo: Optional[str] = Field(None, description="Profile photo as base64 data URL or file path")
     
     class Config:
         """
@@ -88,13 +89,17 @@ class Education(BaseModel):
     degree: str = Field(..., description="Degree and major")
     school: str = Field(..., description="Institution name")
     year: Optional[str] = Field(None, description="Graduation year or date range")
+    gpa: Optional[str] = Field(None, description="GPA or percentage")
+    description: Optional[str] = Field(None, description="Honors, coursework, or other details")
     
     class Config:
         json_schema_extra = {
             "example": {
                 "degree": "B.S. Computer Science",
                 "school": "Stanford University",
-                "year": "2020"
+                "year": "2020",
+                "gpa": "3.9/4.0",
+                "description": "Summa Cum Laude, Dean's List"
             }
         }
 
@@ -105,6 +110,7 @@ class Project(BaseModel):
     tech_stack: str = Field(..., description="Technologies used (comma-separated)")
     description: str = Field(..., description="What the project does")
     link: Optional[HttpUrl] = Field(None, description="Live demo or GitHub link")
+    github_url: Optional[HttpUrl] = Field(None, description="GitHub repository link")
     
     class Config:
         json_schema_extra = {
@@ -112,7 +118,26 @@ class Project(BaseModel):
                 "title": "AI Resume Parser",
                 "tech_stack": "Python, FastAPI, Gemini AI",
                 "description": "SaaS tool that converts resumes to structured JSON using LLMs",
-                "link": "https://github.com/user/resume-parser"
+                "link": "https://example.com/demo",
+                "github_url": "https://github.com/user/resume-parser"
+            }
+        }
+
+
+class Achievement(BaseModel):
+    """Achievement or award entry"""
+    title: str = Field(..., description="Achievement title")
+    description: Optional[str] = Field(None, description="Details about the achievement")
+    date: Optional[str] = Field(None, description="Date or year")
+    issuer: Optional[str] = Field(None, description="Organization that issued it")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "Best Paper Award",
+                "description": "Recognized for outstanding research in AI",
+                "date": "2023",
+                "issuer": "IEEE Conference"
             }
         }
 
@@ -140,6 +165,8 @@ class PortfolioData(BaseModel):
     experience: List[Experience] = Field(default_factory=list)
     education: List[Education] = Field(default_factory=list)
     projects: List[Project] = Field(default_factory=list)
+    achievements: List[Achievement] = Field(default_factory=list, description="Awards, certifications, honors")
+    design_template: str = Field(default="split_screen_hero", description="Portfolio design layout: split_screen_hero, single_page_scroll, elegant_professional, portfolio_template_new (legacy)")
     theme: str = Field(default="minimal-pro", description="Visual theme: minimal-pro, midnight-tech, creative-studio, executive-black, nature-calm, cyber-neon, classic-academia, mono-focus, product-designer, warm-personal")
     dark_mode: bool = Field(default=False, description="Enable dark mode for the portfolio theme")
     
@@ -155,6 +182,7 @@ class PortfolioData(BaseModel):
                 "experience": [],
                 "education": [],
                 "projects": [],
+                "design_template": "split_screen_hero",
                 "theme": "minimal-pro",
                 "dark_mode": False
             }

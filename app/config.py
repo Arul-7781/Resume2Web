@@ -31,6 +31,18 @@ class Settings(BaseSettings):
     gemini_api_key: Optional[str] = None
     gemini_model: str = "gemini-2.5-flash"  # Latest fast model
     openai_api_key: Optional[str] = None
+    openai_model: str = "gpt-4o-mini"  # Cost-effective model
+    groq_api_key: Optional[str] = None
+    groq_model: str = "llama-3.3-70b-versatile"  # Fast, high quality
+    mistral_api_key: Optional[str] = None
+    mistral_model: str = "mistral-small-latest"  # Balanced model
+    cohere_api_key: Optional[str] = None
+    cohere_model: str = "command-r"  # Cost-effective, good accuracy
+    
+    # Multi-LLM Configuration
+    parser_mode: str = "adaptive"  # Options: fallback, ensemble, validation, adaptive
+    min_quality_score: float = 75.0  # Minimum acceptable quality score
+    max_parse_attempts: int = 3  # Maximum re-parsing attempts
     
     # Netlify Configuration
     netlify_access_token: Optional[str] = None  # Optional for development
