@@ -143,6 +143,12 @@ class PortfolioData(BaseModel):
     theme: str = Field(default="minimal-pro", description="Visual theme: minimal-pro, midnight-tech, creative-studio, executive-black, nature-calm, cyber-neon, classic-academia, mono-focus, product-designer, warm-personal")
     dark_mode: bool = Field(default=False, description="Enable dark mode for the portfolio theme")
     
+    # SEO and Analytics (optional fields)
+    custom_domain: Optional[str] = Field(None, description="Custom domain for deployment (e.g., 'myportfolio.com')")
+    google_analytics_id: Optional[str] = Field(None, description="Google Analytics tracking ID (e.g., 'G-XXXXXXXXXX')")
+    meta_description: Optional[str] = Field(None, max_length=160, description="SEO meta description for search engines")
+    og_image_url: Optional[HttpUrl] = Field(None, description="Open Graph image URL for social media sharing")
+    
     class Config:
         json_schema_extra = {
             "example": {

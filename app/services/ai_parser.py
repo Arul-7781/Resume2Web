@@ -20,7 +20,7 @@ RESEARCH: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models
 import google.generativeai as genai
 import json
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from app.config import settings
 from app.models.portfolio import PortfolioData
 
@@ -29,38 +29,68 @@ logger = logging.getLogger(__name__)
 
 class AIParserService:
     """
-    Resume parsing service using Google Gemini with Chain of Thought
+    Resume parsing service with Multi-LLM Fallback support
     
     ARCHITECTURE:
-    - Stateful service (maintains API client)
+    - Primary: Google Gemini (fast and cost-effective)
+    - Fallback: OpenAI GPT-4 (if Gemini fails or quota exceeded)
+    - Stateful service (maintains API clients)
     - Configurable prompts for different parsing strategies
     - Structured output validation
+    
+    WHY MULTI-LLM FALLBACK?
+    - Gemini free tier has daily limits (quota exhaustion)
+    - OpenAI provides backup if Gemini is down
+    - Increases overall system reliability
+    - Cost optimization (use Gemini first, GPT only when needed)
     """
     
     def __init__(self):
         """
-        Initialize the AI client
+        Initialize the AI clients (Gemini primary, OpenAI fallback)
         
-        CONCEPT: Lazy initialization
-        Only create the client when this service is actually used
+        CONCEPT: Lazy initialization with graceful degradation
+        - If Gemini key missing, try OpenAI
+        - If both missing, raise error
         """
-        if not settings.gemini_api_key:
-            raise ValueError("GEMINI_API_KEY not found in environment variables")
+        self.gemini_model = None
+        self.openai_client = None
         
-        genai.configure(api_key=settings.gemini_api_key)
-        self.model = genai.GenerativeModel(settings.gemini_model)
-        logger.info(f"AI Parser initialized with {settings.gemini_model}")
+        # Initialize Gemini (primary)
+        if settings.gemini_api_key:
+            try:
+                genai.configure(api_key=settings.gemini_api_key)
+                self.gemini_model = genai.GenerativeModel(settings.gemini_model)
+                logger.info(f"✅ Gemini AI initialized ({settings.gemini_model})")
+            except Exception as e:
+                logger.warning(f"⚠️ Gemini initialization failed: {e}")
+        
+        # Initialize OpenAI (fallback)
+        if settings.openai_api_key:
+            try:
+                from openai import OpenAI
+                self.openai_client = OpenAI(api_key=settings.openai_api_key)
+                logger.info(f"✅ OpenAI fallback initialized")
+            except ImportError:
+                logger.warning("⚠️ OpenAI library not installed. Install with: pip install openai")
+            except Exception as e:
+                logger.warning(f"⚠️ OpenAI initialization failed: {e}")
+        
+        # Check if at least one LLM is available
+        if not self.gemini_model and not self.openai_client:
+            raise ValueError(
+                "No AI provider configured. Set GEMINI_API_KEY or OPENAI_API_KEY in environment variables."
+            )
     
     def parse_resume(self, resume_text: str) -> PortfolioData:
         """
-        Parse resume text into structured PortfolioData
+        Parse resume text with multi-LLM fallback
         
-        ALGORITHM (Chain of Thought):
-        1. Send resume + CoT prompt to LLM
-        2. LLM thinks step-by-step (reasoning phase)
-        3. LLM outputs JSON (extraction phase)
-        4. Validate JSON against Pydantic schema
-        5. Return structured data
+        ALGORITHM (Chain of Thought with Fallback):
+        1. Try Gemini first (faster and free tier available)
+        2. If Gemini fails → fallback to OpenAI GPT-4
+        3. Extract and validate JSON
+        4. Return structured PortfolioData
         
         Args:
             resume_text: Raw text extracted from PDF
@@ -69,34 +99,71 @@ class AIParserService:
             PortfolioData object (validated)
             
         Raises:
-            ValueError: If parsing fails or JSON is invalid
+            ValueError: If all LLMs fail
         """
-        try:
-            # Build the Chain of Thought prompt
-            prompt = self._build_cot_prompt(resume_text)
-            
-            # Call the LLM
-            logger.info("Sending resume to AI for parsing...")
-            response = self.model.generate_content(prompt)
-            
-            # Extract the JSON from the response
-            # CONCEPT: LLM responses often include explanatory text + JSON
-            # We need to extract just the JSON part
-            parsed_data = self._extract_json_from_response(response.text)
-            
-            # Clean the data before validation
-            parsed_data = self._clean_parsed_data(parsed_data)
-            
-            # CONCEPT: Pydantic validation
-            # This automatically checks all types, required fields, email format, etc.
-            portfolio_data = PortfolioData(**parsed_data)
-            
-            logger.info(f"Successfully parsed resume for {portfolio_data.personal_info.name}")
-            return portfolio_data
-            
-        except Exception as e:
-            logger.error(f"Resume parsing failed: {e}")
-            raise ValueError(f"Failed to parse resume: {str(e)}")
+        errors = []
+        
+        # Try Gemini first (primary)
+        if self.gemini_model:
+            try:
+                logger.info("🔄 Attempting parse with Gemini...")
+                response_text = self._parse_with_gemini(resume_text)
+                parsed_data = self._extract_json_from_response(response_text)
+                parsed_data = self._clean_parsed_data(parsed_data)
+                portfolio_data = PortfolioData(**parsed_data)
+                logger.info(f"✅ Gemini successfully parsed resume for {portfolio_data.personal_info.name}")
+                return portfolio_data
+            except Exception as e:
+                error_msg = f"Gemini failed: {str(e)}"
+                logger.warning(f"⚠️ {error_msg}")
+                errors.append(error_msg)
+        
+        # Fallback to OpenAI
+        if self.openai_client:
+            try:
+                logger.info("🔄 Falling back to OpenAI GPT-4...")
+                response_text = self._parse_with_openai(resume_text)
+                parsed_data = self._extract_json_from_response(response_text)
+                parsed_data = self._clean_parsed_data(parsed_data)
+                portfolio_data = PortfolioData(**parsed_data)
+                logger.info(f"✅ OpenAI successfully parsed resume for {portfolio_data.personal_info.name}")
+                return portfolio_data
+            except Exception as e:
+                error_msg = f"OpenAI failed: {str(e)}"
+                logger.error(f"❌ {error_msg}")
+                errors.append(error_msg)
+        
+        # All LLMs failed
+        error_summary = " | ".join(errors)
+        raise ValueError(f"All AI providers failed to parse resume. Errors: {error_summary}")
+    
+    def _parse_with_gemini(self, resume_text: str) -> str:
+        """Call Gemini API and return raw response text"""
+        prompt = self._build_cot_prompt(resume_text)
+        response = self.gemini_model.generate_content(prompt)
+        return response.text
+    
+    def _parse_with_openai(self, resume_text: str) -> str:
+        """Call OpenAI API and return raw response text"""
+        prompt = self._build_cot_prompt(resume_text)
+        
+        response = self.openai_client.chat.completions.create(
+            model="gpt-4o-mini",  # Cost-effective GPT-4 model
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an expert resume parser. Extract structured data following the user's instructions exactly."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.3,  # Lower = more deterministic
+            max_tokens=4096
+        )
+        
+        return response.choices[0].message.content
     
     def _build_cot_prompt(self, resume_text: str) -> str:
         """

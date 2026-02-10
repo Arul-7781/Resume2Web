@@ -9,7 +9,7 @@ pydantic-settings
 
 # AI/LLM
 google-generativeai
-# openai  # Alternative option
+openai  # Multi-LLM fallback support
 
 # PDF Handling
 PyPDF2
