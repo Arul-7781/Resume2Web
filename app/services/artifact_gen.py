@@ -123,8 +123,22 @@ class ArtifactGeneratorService:
         Returns:
             Complete HTML string
         """
-        # Use new professional template with theme support
-        template = self.env.get_template('portfolio_template_new.html')
+        # Map design template selection to actual template files
+        template_map = {
+            'split_screen_hero': 'split_screen_hero.html',
+            'single_page_scroll': 'single_page_scroll.html',
+            'elegant_professional': 'elegant_professional.html',
+            'portfolio_template_new': 'portfolio_template_new.html',  # Legacy support
+        }
+        
+        # Get template name, default to split_screen_hero if not found
+        template_name = template_map.get(
+            data.design_template,
+            'split_screen_hero.html'
+        )
+        
+        logger.info(f"Using portfolio template: {template_name}")
+        template = self.env.get_template(template_name)
         
         # CONCEPT: Template context
         # This dict is available in the template as variables
@@ -134,6 +148,7 @@ class ArtifactGeneratorService:
             experience=data.experience,
             education=data.education,
             projects=data.projects,
+            achievements=data.achievements,
             theme=data.theme
         )
         

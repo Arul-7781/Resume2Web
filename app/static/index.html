@@ -365,6 +365,56 @@
                     </div>
 
                     <div id="uploadError" class="hidden mt-6 p-4 rounded-lg" style="background: var(--error); background-opacity: 0.1; border: 1px solid var(--error); color: var(--error);"></div>
+                    
+                    <!-- Design Template Selection for AI Upload (shown after parsing) -->
+                    <div id="aiDesignTemplateSection" class="hidden mt-8 p-6 rounded-xl" style="background: var(--bg-secondary);">
+                        <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">🎨 Choose Your Design Style</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="split_screen_hero" class="hidden" checked onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🌟 Split Screen Hero</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Modern & Bold</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="single_page_scroll" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🌊 Single Page Scroll</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Friendly & Colorful</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="elegant_professional" class="hidden" onchange="toggleAiColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">✨ Elegant Professional</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Warm & Sophisticated</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="aiDesignTemplate" value="portfolio_template_new" class="hidden" onchange="toggleAiColorThemes(true)">
+                                <div>
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">🎭 Classic Themes</h4>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Original Color Variations</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Photo Upload -->
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold mb-3" style="color: var(--text-primary);">📸 Upload Your Photo (Optional)</h3>
+                            <div class="border-2 border-dashed rounded-lg p-6 text-center" style="border-color: var(--border);">
+                                <input type="file" id="aiPhotoUpload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'ai')">
+                                <button type="button" onclick="document.getElementById('aiPhotoUpload').click()" class="btn-secondary">
+                                    Choose Photo
+                                </button>
+                                <p class="text-xs mt-2" style="color: var(--text-secondary);">JPG, PNG (max 5MB)</p>
+                                <div id="aiPhotoPreview" class="hidden mt-4">
+                                    <img id="aiPhotoPreviewImg" class="w-32 h-32 rounded-full mx-auto object-cover" alt="Profile photo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -402,6 +452,19 @@
                             <div class="md:col-span-2">
                                 <label for="bio">Professional Summary</label>
                                 <textarea id="bio" rows="3" placeholder="Brief description about yourself..."></textarea>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="manualPhotoUpload">Profile Photo (Optional)</label>
+                                <div class="border-2 border-dashed rounded-lg p-6 text-center" style="border-color: var(--border);">
+                                    <input type="file" id="manualPhotoUpload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'manual')">
+                                    <button type="button" onclick="document.getElementById('manualPhotoUpload').click()" class="btn-secondary">
+                                        📸 Upload Photo
+                                    </button>
+                                    <p class="text-xs mt-2" style="color: var(--text-secondary);">JPG, PNG (max 5MB)</p>
+                                    <div id="manualPhotoPreview" class="hidden mt-4">
+                                        <img id="manualPhotoPreviewImg" class="w-32 h-32 rounded-full mx-auto object-cover" alt="Profile photo">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -449,9 +512,58 @@
                         <div id="achievementContainer"></div>
                     </div>
 
-                    <!-- Theme Selection -->
+                    <!-- Design Template Selection (NEW) -->
                     <div class="form-section">
-                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Portfolio Theme</h3>
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">🎨 Portfolio Design Style</h3>
+                        <p class="text-sm mb-4" style="color: var(--text-secondary);">Choose a completely different layout and design system (not just colors!)</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="split_screen_hero" class="hidden" checked onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🌟 Split Screen Hero</h4>
+                                    <div class="text-4xl mb-3 text-center">💼</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Modern, bold split-screen layout with professional photo showcase</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Dark navy + Cyan accent</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Designers, Product Managers, Modern Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="single_page_scroll" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🌊 Single Page Scroll</h4>
+                                    <div class="text-4xl mb-3 text-center">🎨</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Friendly, colorful design with wave dividers and progress bars</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Vibrant green + Yellow accents</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Developers, Freelancers, Creative Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="elegant_professional" class="hidden" onchange="toggleManualColorThemes(false)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">✨ Elegant Professional</h4>
+                                    <div class="text-4xl mb-3 text-center">🏆</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Warm, sophisticated design with curved sections and script fonts</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">Forest green + Beige/Pink</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Consultants, Coaches, Corporate Professionals</p>
+                                </div>
+                            </label>
+                            <label class="theme-option-card" style="cursor: pointer;">
+                                <input type="radio" name="design_template" value="portfolio_template_new" class="hidden" onchange="toggleManualColorThemes(true)">
+                                <div>
+                                    <h4 class="font-semibold mb-2" style="color: var(--text-primary);">🎭 Classic Themes</h4>
+                                    <div class="text-4xl mb-3 text-center">🎨</div>
+                                    <p class="text-xs mb-2" style="color: var(--text-secondary);">Original template with multiple color theme variations</p>
+                                    <p class="text-xs font-medium mb-2" style="color: var(--accent-primary);">7 color variations available</p>
+                                    <p class="text-xs" style="color: var(--text-secondary);">Best for: Traditional portfolios, All professions</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Color Theme Selection (Legacy - for fine-tuning) - Only shown when Classic Themes is selected -->
+                    <div id="manualColorThemeSection" class="form-section hidden">
+                        <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">🎨 Choose Color Theme</h3>
+                        <p class="text-sm mb-4" style="color: var(--text-secondary);">Select one of the classic color variations:</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                             <label class="theme-option-card">
                                 <input type="radio" name="theme" value="minimal-pro" class="hidden" checked>
@@ -569,9 +681,9 @@
                 <button onclick="applyLinkEnrichment()" class="btn-secondary mt-4">Apply Links</button>
             </div>
             
-            <!-- Theme Selection for AI Upload -->
-            <div class="form-section mb-6">
-                <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Choose Portfolio Theme</h3>
+            <!-- Theme Selection for AI Upload - Only shown when Classic Themes is selected -->
+            <div id="aiColorThemeSection" class="form-section mb-6 hidden">
+                <h3 class="text-xl font-semibold mb-4" style="color: var(--text-primary);">Choose Color Theme</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                     <label class="theme-option-card">
                         <input type="radio" name="aiTheme" value="minimal-pro" class="hidden" checked>
@@ -750,6 +862,64 @@
         let experienceCount = 0;
         let educationCount = 0;
         let projectCount = 0;
+        let userPhotoBase64 = null; // Store uploaded photo as base64
+
+        // Toggle color theme section based on design template selection
+        function toggleAiColorThemes(show) {
+            const section = document.getElementById('aiColorThemeSection');
+            if (show) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
+        }
+
+        // Toggle color theme section for manual entry
+        function toggleManualColorThemes(show) {
+            const section = document.getElementById('manualColorThemeSection');
+            if (show) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
+        }
+
+        // Photo upload handler
+        function handlePhotoUpload(event, source) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            // Read and preview the image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                userPhotoBase64 = e.target.result;
+                
+                // Show preview based on source
+                const previewDiv = source === 'ai' ? 'aiPhotoPreview' : 'manualPhotoPreview';
+                const previewImg = source === 'ai' ? 'aiPhotoPreviewImg' : 'manualPhotoPreviewImg';
+                
+                document.getElementById(previewDiv).classList.remove('hidden');
+                document.getElementById(previewImg).src = userPhotoBase64;
+                
+                // Add photo to portfolio data if it exists
+                if (portfolioData && portfolioData.personal_info) {
+                    portfolioData.personal_info.photo = userPhotoBase64;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
 
         // Tab switching
         function switchTab(tab) {
@@ -806,6 +976,15 @@
 
                 const result = await response.json();
                 portfolioData = result.portfolio_data;
+                
+                // Show design template selection after successful parsing
+                document.getElementById('aiDesignTemplateSection').classList.remove('hidden');
+                
+                // Add design template and theme selections to the parsed data
+                portfolioData.design_template = document.querySelector('[name="aiDesignTemplate"]:checked')?.value || 'split_screen_hero';
+                portfolioData.theme = document.querySelector('[name="aiTheme"]:checked')?.value || 'minimal-pro';
+                portfolioData.dark_mode = document.getElementById('aiThemeDarkMode')?.checked || false;
+                
                 const validation = result.validation;
                 
                 // Show validation results
@@ -1175,7 +1354,8 @@
                     location: document.getElementById('location').value,
                     linkedin: document.getElementById('linkedin').value,
                     github: document.getElementById('github').value,
-                    bio: document.getElementById('bio').value
+                    bio: document.getElementById('bio').value,
+                    photo: userPhotoBase64 // Add uploaded photo
                 },
                 skills: document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s),
                 experience: [],
@@ -1228,22 +1408,30 @@
                 });
             });
             
+            // Add design template selection
+            formData.design_template = document.querySelector('[name="design_template"]:checked')?.value || 'split_screen_hero';
+            formData.theme = document.querySelector('[name="theme"]:checked')?.value || 'minimal-pro';
+            formData.dark_mode = document.getElementById('themeDarkMode')?.checked || false;
+            
             portfolioData = formData;
             showPreview();
         });
 
         // Preview portfolio in modal
         async function showPortfolioPreview() {
+            const selectedDesignTemplate = document.querySelector('[name="aiDesignTemplate"]:checked')?.value || 
+                                          document.querySelector('[name="design_template"]:checked')?.value || 'split_screen_hero';
             const selectedTheme = document.querySelector('[name="aiTheme"]:checked')?.value || 
                                  document.querySelector('[name="theme"]:checked')?.value || 'minimal-pro';
             const darkMode = document.getElementById('aiThemeDarkMode')?.checked || 
                            document.getElementById('themeDarkMode')?.checked || false;
             
-            console.log('Preview request:', { theme: selectedTheme, darkMode, portfolioData });
+            console.log('Preview request:', { design_template: selectedDesignTemplate, theme: selectedTheme, darkMode, portfolioData });
             
-            // Create a copy of portfolioData and add theme/dark_mode to it
+            // Create a copy of portfolioData and add design_template/theme/dark_mode to it
             const dataToSend = {
                 ...portfolioData,
+                design_template: selectedDesignTemplate,
                 theme: selectedTheme,
                 dark_mode: darkMode
             };

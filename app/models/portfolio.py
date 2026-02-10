@@ -39,6 +39,7 @@ class PersonalInfo(BaseModel):
     github: Optional[HttpUrl] = Field(None, description="GitHub profile URL")
     bio: Optional[str] = Field(None, max_length=500, description="Short professional summary")
     location: Optional[str] = Field(None, max_length=100, description="City, Country")
+    photo: Optional[str] = Field(None, description="Profile photo as base64 data URL or file path")
     
     class Config:
         """
@@ -165,6 +166,7 @@ class PortfolioData(BaseModel):
     education: List[Education] = Field(default_factory=list)
     projects: List[Project] = Field(default_factory=list)
     achievements: List[Achievement] = Field(default_factory=list, description="Awards, certifications, honors")
+    design_template: str = Field(default="split_screen_hero", description="Portfolio design layout: split_screen_hero, single_page_scroll, elegant_professional, portfolio_template_new (legacy)")
     theme: str = Field(default="minimal-pro", description="Visual theme: minimal-pro, midnight-tech, creative-studio, executive-black, nature-calm, cyber-neon, classic-academia, mono-focus, product-designer, warm-personal")
     dark_mode: bool = Field(default=False, description="Enable dark mode for the portfolio theme")
     
@@ -180,6 +182,7 @@ class PortfolioData(BaseModel):
                 "experience": [],
                 "education": [],
                 "projects": [],
+                "design_template": "split_screen_hero",
                 "theme": "minimal-pro",
                 "dark_mode": False
             }
