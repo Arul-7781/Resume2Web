@@ -28,7 +28,7 @@ class MistralParser(BaseParser):
             raise ValueError("MISTRAL_API_KEY not configured")
         
         self.client = self.mistral_module(api_key=settings.mistral_api_key)
-        self.model = getattr(settings, 'mistral_model', 'mistral-small-3.2')
+        self.model = getattr(settings, 'mistral_model', 'mistral-small-latest')
         logger.info(f"Mistral parser initialized with {self.model}")
     
     def parse_resume(self, resume_text: str) -> PortfolioData:
