@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<head>    <base target="_self">    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ personal_info.name }} - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -287,7 +286,7 @@
                     <p class="text-gray-400 text-lg mb-2">Hi I am</p>
                     <h2 class="text-gray-300 text-3xl mb-6">{{ personal_info.name }}</h2>
                     <h1 class="text-6xl md:text-7xl font-bold mb-8" style="color: var(--accent-orange);">
-                        {{ personal_info.title or 'UI/UX designer' }}
+                        {{ personal_info.title or 'Professional' }}
                     </h1>
                     
                     <!-- Social Icons -->
@@ -381,7 +380,11 @@
                         {% if personal_info.bio %}
                         {{ personal_info.bio }}
                         {% else %}
-                        A software engineer, the modern-day architect of digital realms, navigates the ethereal landscapes of code, sculpting intangible structures that power our technological world. With fingers poised over keyboards like virtuoso pianists, they compose symphonies of logic, their minds a labyrinth of algorithms and solutions.
+                        {% if personal_info.bio %}
+                        {{ personal_info.bio }}
+                        {% else %}
+                        A dedicated professional and modern-day architect of digital solutions, navigating complex challenges and sculpting innovative structures that power our technological world. With expertise and precision, I compose elegant solutions, combining creativity with technical excellence.
+                        {% endif %}
                         {% endif %}
                     </p>
                     
@@ -593,7 +596,7 @@
                 </div>
                 
                 <p class="text-xs text-gray-600">
-                    Designed by {{ personal_info.name }} {{ personal_info.title or 'UI/UX designer' }}
+                    Designed by {{ personal_info.name }} - {{ personal_info.title or 'Professional' }}
                 </p>
             </div>
         </div>

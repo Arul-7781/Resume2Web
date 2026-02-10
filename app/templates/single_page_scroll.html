@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<head>    <base target="_self">    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ personal_info.name }} - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -198,7 +197,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-16 px-6 text-center">
-        <p class="text-gray-600 mb-4 font-semibold">FREELANCE DESIGNER & WEB DEVELOPER</p>
+        <p class="text-gray-600 mb-4 font-semibold">{{ (personal_info.title or 'SOFTWARE DEVELOPER')|upper }}</p>
         <h1 class="text-5xl md:text-6xl font-extrabold mb-8">
             I am <span style="color: #4CAF50;">{{ personal_info.name }}</span>
         </h1>

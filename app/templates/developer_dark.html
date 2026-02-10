@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<head>    <base target="_self">    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ personal_info.name }} - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -375,15 +374,14 @@
                 <!-- Left: Text -->
                 <div>
                     <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-8 leading-tight">
-                        {{ personal_info.name.split()[0] }} is a <span class="accent-purple">{{ personal_info.title or 'web designer' }}</span> and 
-                        <span class="accent-purple">developer</span>
+                        {{ personal_info.name.split()[0] }} is a <span class="accent-purple">{{ personal_info.title or 'professional' }}</span>
                     </h1>
                     
                     <p class="text-lg mb-8">
                         {% if personal_info.bio %}
-                        {{ personal_info.bio[:100] }}...
+                        {{ personal_info.bio[:150] }}{% if personal_info.bio|length > 150 %}...{% endif %}
                         {% else %}
-                        He crafts responsive websites where technologies meet creativity
+                        Crafting innovative solutions where technology meets creativity
                         {% endif %}
                     </p>
                     
@@ -421,10 +419,21 @@
     <section class="py-20 px-6 md:px-12 relative">
         <div class="container mx-auto max-w-4xl">
             <div class="quote-box">
+                {% set tech_quotes = [
+                    {"quote": "With great power comes great electricity bill", "author": "Unknown Developer"},
+                    {"quote": "First, solve the problem. Then, write the code", "author": "John Johnson"},
+                    {"quote": "Code is like humor. When you have to explain it, it's bad", "author": "Cory House"},
+                    {"quote": "The best error message is the one that never shows up", "author": "Thomas Fuchs"},
+                    {"quote": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand", "author": "Martin Fowler"},
+                    {"quote": "Make it work, make it right, make it fast", "author": "Kent Beck"},
+                    {"quote": "Talk is cheap. Show me the code", "author": "Linus Torvalds"},
+                    {"quote": "Simplicity is the soul of efficiency", "author": "Austin Freeman"}
+                ] %}
+                {% set random_quote = tech_quotes[range(0, tech_quotes|length)|random] %}
                 <p class="text-xl md:text-2xl text-white mb-4">
-                    "With great power comes great electricity bill"
+                    "{{ random_quote.quote }}"
                 </p>
-                <p class="text-right">- Dr. Who</p>
+                <p class="text-right">- {{ random_quote.author }}</p>
             </div>
         </div>
     </section>
@@ -520,9 +529,9 @@
                         {% else %}
                         Hello, i'm {{ personal_info.name.split()[0] }}!
                         <br><br>
-                        I'm a self-taught developer based in {{ personal_info.location or 'Kyiv, Ukraine' }}. I can develop responsive websites from scratch and raise them into modern user-friendly web experiences.
+                        I'm a passionate professional dedicated to creating innovative solutions. I transform ideas into reality, building modern applications and experiences from the ground up.
                         <br><br>
-                        Transforming my creativity and knowledge into websites has been my passion for over a year. I have been helping various clients to establish their presence online. I always strive to learn about the newest technologies and frameworks.
+                        Transforming creativity and knowledge into impactful projects has been my passion. I help clients achieve their goals and establish their presence. I always strive to learn about the newest technologies and best practices.
                         {% endif %}
                     </p>
                     <a href="#contacts" class="btn-primary inline-block">Read more -&gt;</a>
@@ -660,7 +669,7 @@
                     <span>{{ personal_info.email or 'contact@example.com' }}</span>
                 </div>
                 
-                <p class="text-center">Web designer and front-end developer</p>
+                <p class="text-center">{{ personal_info.title or 'Software Developer' }}</p>
             </div>
             
             <div class="text-center mt-8 text-sm">
