@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Builder</title>
+    <title>Portfolio Builder - Create Your Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -207,6 +207,97 @@
             display: none !important;
         }
         
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .dark-theme .card-hover:hover {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Feature Cards */
+        .feature-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(124, 58, 237, 0.15);
+        }
+        
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        /* Header gradient */
+        .header-gradient {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+        }
+        
+        /* Theme badges */
+        .theme-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        
         /* Preview Modal */
         .preview-modal {
             position: fixed;
@@ -362,10 +453,15 @@
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <svg class="w-8 h-8" style="color: var(--accent-primary);" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
-                    </svg>
-                    <h1 class="text-2xl font-semibold" style="color: var(--text-primary);">Portfolio Builder</h1>
+                    <div class="w-10 h-10 rounded-xl header-gradient flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold" style="color: var(--text-primary);">Portfolio Builder</h1>
+                        <p class="text-xs" style="color: var(--text-secondary);">Create your professional portfolio in minutes</p>
+                    </div>
                 </div>
                 <button onclick="toggleDarkMode()" class="p-2.5 rounded-lg" style="background: var(--bg-primary); border: 1px solid var(--border);">
                     <svg class="w-5 h-5" id="theme-icon-sun" style="color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -382,8 +478,28 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-6 py-8">
         
+        <!-- Feature Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="font-bold text-lg mb-2" style="color: var(--text-primary);">AI-Powered</h3>
+                <p class="text-sm" style="color: var(--text-secondary);">Upload your resume and let AI extract your information automatically</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-paint-brush"></i></div>
+                <h3 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Beautiful Themes</h3>
+                <p class="text-sm" style="color: var(--text-secondary);">Choose from 9 professionally designed portfolio templates</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                <h3 class="font-bold text-lg mb-2" style="color: var(--text-primary);">Instant Deploy</h3>
+                <p class="text-sm" style="color: var(--text-secondary);">Deploy your portfolio to the web with one click</p>
+            </div>
+        </div>
+
+        
         <!-- Tabs -->
-        <div class="card rounded-xl mb-6">
+        <div class="card rounded-2xl mb-8 card-hover">
             <div class="flex border-b" style="border-color: var(--border);">
                 <button onclick="switchTab('upload')" id="tab-upload" class="tab-button active">
                     AI Upload
@@ -424,6 +540,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <!-- Developer Dark -->
                             <label class="theme-option-card" style="cursor: pointer;">
+                                <span class="theme-badge">Popular</span>
                                 <input type="radio" name="aiDesignTemplate" value="developer_dark" class="hidden" checked onchange="toggleAiColorThemes(false)">
                                 <div class="card-bg" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);"></div>
                                 <div class="card-content">
@@ -438,6 +555,7 @@
                             
                             <!-- Dark Anonymous -->
                             <label class="theme-option-card" style="cursor: pointer;">
+                                <span class="theme-badge">Trending</span>
                                 <input type="radio" name="aiDesignTemplate" value="dark_anonymous" class="hidden" onchange="toggleAiColorThemes(false)">
                                 <div class="card-bg" style="background: linear-gradient(135deg, #000000 0%, #FF0055 100%);"></div>
                                 <div class="card-content">
@@ -668,6 +786,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                             <!-- Developer Dark -->
                             <label class="theme-option-card" style="cursor: pointer;">
+                                <span class="theme-badge">Popular</span>
                                 <input type="radio" name="design_template" value="developer_dark" class="hidden" checked onchange="toggleManualColorThemes(false)">
                                 <div class="card-bg" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);"></div>
                                 <div class="card-content">
@@ -682,6 +801,7 @@
                             
                             <!-- Dark Anonymous -->
                             <label class="theme-option-card" style="cursor: pointer;">
+                                <span class="theme-badge">Trending</span>
                                 <input type="radio" name="design_template" value="dark_anonymous" class="hidden" onchange="toggleManualColorThemes(false)">
                                 <div class="card-bg" style="background: linear-gradient(135deg, #000000 0%, #FF0055 100%);"></div>
                                 <div class="card-content">
