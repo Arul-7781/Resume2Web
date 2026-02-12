@@ -31,7 +31,6 @@ The current state is a solid **MVP (Minimum Viable Product)** but lacks several 
   - Basic logging to console. No structured logging or error tracking (Sentry).
 - **Dependency Management**:
   - `requirements.txt` contains loose versions (e.g. `fastapi`, `uvicorn`). Should use `pip-tools` or `poetry.lock` for reproducible builds.
-  - Deprecated `google.generativeai` package is used. Should migrate to `google-genai`.
 
 ## 5. Monetization Features & Improvements
 To make this product-ready and monetizable:
@@ -63,3 +62,4 @@ To make this product-ready and monetizable:
 - **Fixed**: `ArtifactGeneratorService` now correctly supports Dark Mode.
 - **Cleaned**: Removed legacy/unused `AIParserService` and broken test scripts.
 - **Tested**: Added robust unit tests for Multi-LLM logic and Artifact Generation.
+- **Migrated**: Replaced deprecated `google-generativeai` with `google-genai` library in `GeminiParser` and `ResumeValidator`.

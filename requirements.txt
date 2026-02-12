@@ -8,7 +8,7 @@ pydantic
 pydantic-settings
 
 # AI/LLM
-google-generativeai
+google-genai
 openai  # GPT models for fallback/ensemble
 groq  # Fast Llama models with free tier
 mistralai  # Mistral models

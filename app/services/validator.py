@@ -2,7 +2,7 @@
 AI-Powered Resume Validation Service
 Validates that parsed data matches the original resume content
 """
-import google.generativeai as genai
+from google import genai
 from typing import Dict, Any, List
 import json
 import os
@@ -16,8 +16,8 @@ load_dotenv()
 class ResumeValidator:
     def __init__(self):
         api_key = os.getenv("GEMINI_API_KEY", "")
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel("gemini-2.5-flash")
+        self.client = genai.Client(api_key=api_key)
+        self.model_name = "gemini-2.5-flash"
     
     def validate(self, resume_text: str, parsed_data: PortfolioData) -> Dict[str, Any]:
         """
@@ -91,7 +91,10 @@ Respond with ONLY the JSON object, no other text."""
 
         try:
             # Call Gemini for validation
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt
+            )
             result_text = response.text.strip()
             
             # Extract JSON from response

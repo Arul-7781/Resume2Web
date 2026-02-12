@@ -3,7 +3,8 @@ Gemini Parser - Google Gemini API integration
 Enhanced with better error handling and validation
 """
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import json
 import logging
 import re
@@ -22,8 +23,8 @@ class GeminiParser(BaseParser):
         if not settings.gemini_api_key:
             raise ValueError("GEMINI_API_KEY not configured")
         
-        genai.configure(api_key=settings.gemini_api_key)
-        self.model = genai.GenerativeModel(settings.gemini_model)
+        self.client = genai.Client(api_key=settings.gemini_api_key)
+        self.model_name = settings.gemini_model
         logger.info(f"Gemini parser initialized with {settings.gemini_model}")
     
     def parse_resume(self, resume_text: str) -> PortfolioData:
@@ -32,14 +33,15 @@ class GeminiParser(BaseParser):
             prompt = self._build_prompt(resume_text)
             
             logger.info("Sending to Gemini...")
-            response = self.model.generate_content(
-                prompt,
-                generation_config={
-                    'temperature': 0.1,  # Lower temperature for more consistent output
-                    'top_p': 0.95,
-                    'top_k': 40,
-                    'max_output_tokens': 4096,
-                }
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.1,  # Lower temperature for more consistent output
+                    top_p=0.95,
+                    top_k=40,
+                    max_output_tokens=4096,
+                )
             )
             
             parsed_data = self._extract_json(response.text)

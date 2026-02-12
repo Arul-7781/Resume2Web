@@ -56,7 +56,7 @@ fi
 # Verify installation
 echo ""
 echo "🧪 Verifying installation..."
-python3 -c "import fastapi, pydantic, google.generativeai, weasyprint" && {
+python3 -c "import fastapi, pydantic, google.genai, weasyprint" && {
     echo "✅ All dependencies installed correctly"
 } || {
     echo "❌ Some dependencies failed to install"

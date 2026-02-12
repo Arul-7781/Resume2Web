@@ -16,7 +16,6 @@ python -m pytest tests/
 Ensure you have the dependencies installed (`pip install -r requirements.txt`).
 
 ## ⚠️ Known Issues / Deprecations
-- **`google.generativeai`**: The project uses the deprecated `google-generativeai` library. Future updates should migrate to `google-genai`.
 - **`AIParserService`**: This service was removed as it was legacy code. Use `MultiLLMParser` instead.
 - **Template Logic**: `ArtifactGeneratorService` must pass `dark_mode` explicitly to templates.
 
