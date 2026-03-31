@@ -154,7 +154,8 @@ class ArtifactGeneratorService:
             education=data.education,
             projects=data.projects,
             achievements=data.achievements,
-            theme=data.theme
+            theme=data.theme,
+            dark_mode=data.dark_mode
         )
         
         return html
